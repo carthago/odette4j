@@ -29,7 +29,7 @@ public class OFTPClient
             b.group(new NioEventLoopGroup())
              .channel(NioSocketChannel.class)
              .remoteAddress(host, port)
-             .handler(new OFTPClientInitializer());
+             .handler(new OFTPClientInitializer(true));
 
             // Start the connection attempt.
             Channel ch = b.connect().sync().channel();

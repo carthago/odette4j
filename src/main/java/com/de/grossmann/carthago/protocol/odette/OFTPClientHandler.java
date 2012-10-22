@@ -5,14 +5,16 @@ import io.netty.channel.ChannelInboundMessageHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OFTPClientHandler extends ChannelInboundMessageHandlerAdapter
+import com.de.grossmann.carthago.protocol.odette.codec.data.OdetteExchangeBuffer;
+
+public class OFTPClientHandler extends ChannelInboundMessageHandlerAdapter<OdetteExchangeBuffer>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(OFTPClientHandler.class);
 
     @Override
-    public void messageReceived(final ChannelHandlerContext channelHandlerContext, final Object o) throws Exception
+    public void messageReceived(final ChannelHandlerContext channelHandlerContext, final OdetteExchangeBuffer oeb) throws Exception
     {
-
+        LOGGER.debug(oeb.toString());
     }
 
     @Override
@@ -21,6 +23,4 @@ public class OFTPClientHandler extends ChannelInboundMessageHandlerAdapter
         LOGGER.warn("Unexpected exception from downstream.", cause);
         ctx.close();
     }
-
-
 }

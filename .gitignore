@@ -6,7 +6,11 @@
 *.ear
 
 # IDE Files #
+.classpath
+.project
 .idea
 *.iml
 *.ipr
 *.iws
+.settings/
+target/
