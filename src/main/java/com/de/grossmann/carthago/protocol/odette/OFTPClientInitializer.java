@@ -16,19 +16,19 @@ public class OFTPClientInitializer extends ChannelInitializer<Channel> {
 
     // TODO maybe we could get the constants from the StreamTransmissionHeader class
     // TODO what is is max frame length in our case (MAX_STB_SIZE?)
-    private static int MAX_FRAME_LENGTH = 8192;
+    private static final int MAX_FRAME_LENGTH = 8192;
 
     // The length field starts at second byte.
-    private static int LENGTHFIELD_OFFESET = 1;
+    private static final int LENGTHFIELD_OFFESET = 1;
 
     // The length field is three bytes long.
-    private static int LENGTHFIELD_LENGTH = 3;
+    private static final int LENGTHFIELD_LENGTH = 3;
 
     // The value of the length field contains the header length, too.
-    private static int LENGTH_ADJUSTMENT = -4;
+    private static final int LENGTH_ADJUSTMENT = -4;
 
     // We do not need to strip the header.
-    private static int INITIAL_BYTES_TO_STRIP = 0;
+    private static final int INITIAL_BYTES_TO_STRIP = 0;
 
     public OFTPClientInitializer(final Transport transport) {
         this.transport = transport;
