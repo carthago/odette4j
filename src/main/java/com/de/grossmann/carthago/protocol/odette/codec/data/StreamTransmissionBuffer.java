@@ -19,9 +19,9 @@ public class StreamTransmissionBuffer {
     public OdetteExchangeBuffer getOEB() {
         return oeb;
     }
-    
+
     public boolean isValid() {
-        return (this.sth.getLength() == this.oeb.getLength() + StreamTransmissionHeader.STH_LENGTH) 
+        return (this.sth.getLength() == this.oeb.getLength() + StreamTransmissionHeader.STH_LENGTH)
                 && (this.sth.getLength() >= MIN_STB_SIZE && this.sth.getLength() <= MAX_STB_SIZE);
     }
 

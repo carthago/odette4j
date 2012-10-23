@@ -1,17 +1,14 @@
 package com.de.grossmann.carthago;
 
+import com.de.grossmann.carthago.protocol.odette.OFTPClient;
+import com.de.grossmann.carthago.protocol.odette.codec.Transport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.de.grossmann.carthago.protocol.odette.OFTPClient;
-import com.de.grossmann.carthago.protocol.odette.codec.Transport;
-
-public class App
-{
+public class App {
     private final static Logger LOGGER = LoggerFactory.getLogger(App.class);
 
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
         LOGGER.debug("START>");
         OFTPClient client = new OFTPClient("10.33.101.186", 6619, Transport.TLS);
         client.run();
