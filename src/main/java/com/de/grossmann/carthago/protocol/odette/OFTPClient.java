@@ -9,16 +9,21 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import com.de.grossmann.carthago.protocol.odette.codec.Transport;
+
 public class OFTPClient
 {
 
-    private final String host;
-    private final int port;
+    private final String    host;
+    private final int       port;
+    private final Transport transport;
+    
 
-    public OFTPClient(String host, int port)
+    public OFTPClient(final String host, final int port, final Transport transport)
     {
-        this.host = host;
-        this.port = port;
+        this.host      = host;
+        this.port      = port;
+        this.transport = transport;
     }
 
     public void run() throws Exception
@@ -29,7 +34,7 @@ public class OFTPClient
             b.group(new NioEventLoopGroup())
              .channel(NioSocketChannel.class)
              .remoteAddress(host, port)
-             .handler(new OFTPClientInitializer(true));
+             .handler(new OFTPClientInitializer(this.transport));
 
             // Start the connection attempt.
             Channel ch = b.connect().sync().channel();
@@ -68,23 +73,4 @@ public class OFTPClient
             b.shutdown();
         }
     }
-
-    public static void main(String[] args) throws Exception
-    {
-        // Print usage if no argument is specified.
-        if (args.length != 2)
-        {
-            System.err.println(
-                    "Usage: " + OFTPClient.class.getSimpleName() +
-                    " <host> <port>");
-            return;
-        }
-
-        // Parse options.
-        String host = args[0];
-        int port = Integer.parseInt(args[1]);
-
-        new OFTPClient(host, port).run();
-    }
-
 }

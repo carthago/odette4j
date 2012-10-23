@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.de.grossmann.carthago.protocol.odette.OFTPClient;
+import com.de.grossmann.carthago.protocol.odette.codec.Transport;
 
 public class App
 {
@@ -12,8 +13,7 @@ public class App
     public static void main(String[] args) throws Exception
     {
         LOGGER.debug("START>");
-        
-        OFTPClient client = new OFTPClient("10.33.90.18", 3305);
+        OFTPClient client = new OFTPClient("10.33.101.186", 6619, Transport.TLS);
         client.run();
     }
 }
