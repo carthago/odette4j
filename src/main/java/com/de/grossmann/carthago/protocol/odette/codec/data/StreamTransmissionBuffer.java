@@ -1,32 +1,34 @@
 package com.de.grossmann.carthago.protocol.odette.codec.data;
 
+import java.util.Arrays;
+
 public class StreamTransmissionBuffer {
-    public static final int MIN_STB_SIZE = 5;
-    public static final int MAX_STB_SIZE = 100003;
+    public static final int MIN_SIZE = 5;
+    public static final int MAX_SIZE = 100003;
 
-    private final StreamTransmissionHeader sth;
-    private final byte[] oeb;
+    private final StreamTransmissionHeader streamTransmissionHeader;
+    private final byte[] odetteExchangeBuffer;
 
-    public StreamTransmissionBuffer(StreamTransmissionHeader sth, byte[] oeb) {
-        this.sth = sth;
-        this.oeb = oeb;
+    public StreamTransmissionBuffer(StreamTransmissionHeader streamTransmissionHeader, byte[] odetteExchangeBuffer) {
+        this.streamTransmissionHeader = streamTransmissionHeader;
+        this.odetteExchangeBuffer = odetteExchangeBuffer;
     }
 
-    public StreamTransmissionHeader getSTH() {
-        return sth;
+    public StreamTransmissionHeader getStreamTransmissionHeader() {
+        return streamTransmissionHeader;
     }
 
-    public byte[] getOEB() {
-        return oeb;
+    public byte[] getOdetteExchangeBuffer() {
+        return odetteExchangeBuffer;
     }
 
     public boolean isValid() {
-        return (this.sth.getLength() == this.oeb.length + StreamTransmissionHeader.STH_LENGTH)
-                && (this.sth.getLength() >= MIN_STB_SIZE && this.sth.getLength() <= MAX_STB_SIZE);
+        return (getStreamTransmissionHeader().getLength() == getOdetteExchangeBuffer().length + StreamTransmissionHeader.STH_LENGTH)
+                && (getStreamTransmissionHeader().getLength() >= MIN_SIZE && getStreamTransmissionHeader().getLength() <= MAX_SIZE);
     }
 
     @Override
     public String toString() {
-        return String.format("StreamTransmissionBuffer [%s, %s]", sth, oeb);
+        return String.format("StreamTransmissionBuffer [%s, %s]", getStreamTransmissionHeader(), Arrays.toString(getOdetteExchangeBuffer()));
     }
 }

@@ -70,30 +70,30 @@ public class StreamTransmissionHeader {
     }
 
     public byte getVersion() {
-        return version;
+        return this.version;
     }
 
     public byte getFlags() {
-        return flags;
+        return this.flags;
     }
 
     public int getLength() {
-        return length;
+        return this.length;
     }
 
     public boolean isValid() {
-        return (version == STH_VERSION) && (flags == STH_FLAGS)
-                && (length >= 5 && length <= 100003);
+        return (this.version == STH_VERSION) && (this.flags == STH_FLAGS)
+                && (this.length >= 5 && this.length <= 100003);
     }
 
     public byte[] getBytes() {
-        return new byte[]{halfBytesToByte(version, flags), (byte) (length >>> 16),
-                (byte) (length >>> 8), (byte) (length)};
+        return new byte[]{halfBytesToByte(this.version, this.flags), (byte) (this.length >>> 16),
+                (byte) (this.length >>> 8), (byte) (this.length)};
     }
 
     @Override
     public String toString() {
-        return String.format("STH [version=%s, flags=%s, length=%s]", halfByteToBin(version),
-                halfByteToBin(flags), length);
+        return String.format("STH [version=%s, flags=%s, length=%s]", halfByteToBin(this.version),
+                halfByteToBin(this.flags), this.length);
     }
 }

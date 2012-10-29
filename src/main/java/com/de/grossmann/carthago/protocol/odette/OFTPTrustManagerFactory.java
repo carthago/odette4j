@@ -1,5 +1,8 @@
 package com.de.grossmann.carthago.protocol.odette;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.net.ssl.ManagerFactoryParameters;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactorySpi;
@@ -12,32 +15,34 @@ import java.security.cert.X509Certificate;
 
 public class OFTPTrustManagerFactory extends TrustManagerFactorySpi {
 
-    private static final TrustManager DUMMY_TRUST_MANAGER = new X509TrustManager() {
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
+    private static final Logger LOGGER;
+    private static final TrustManager DUMMY_TRUST_MANAGER;
 
-        @Override
-        public void checkClientTrusted(
-                X509Certificate[] chain, String authType) throws CertificateException {
-            // Always trust - it is an example.
-            // You should do something in the real world.
-            // You will reach here only if you enabled client certificate auth,
-            // as described in SecureChatSslContextFactory.
-            System.err.println(
-                    "UNKNOWN CLIENT CERTIFICATE: " + chain[0].getSubjectDN());
-        }
+    static {
 
-        @Override
-        public void checkServerTrusted(
-                X509Certificate[] chain, String authType) throws CertificateException {
-            // Always trust - it is an example.
-            // You should do something in the real world.
-            System.err.println(
-                    "UNKNOWN SERVER CERTIFICATE: " + chain[0].getSubjectDN());
-        }
-    };
+        LOGGER = LoggerFactory.getLogger(OFTPTrustManagerFactory.class);
+        DUMMY_TRUST_MANAGER = new X509TrustManager() {
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
+            }
+
+            @Override
+            public void checkClientTrusted(
+                    X509Certificate[] chain, String authType) throws CertificateException {
+                // Always trust - it is an example.
+                LOGGER.warn("We do not check the client certificate: " + chain[0].getSubjectDN());
+            }
+
+            @Override
+            public void checkServerTrusted(
+                    X509Certificate[] chain, String authType) throws CertificateException {
+                // Always trust - it is an example.
+                LOGGER.warn("We do not check the server certificate: " + chain[0].getSubjectDN());
+            }
+        };
+    }
 
     public static TrustManager[] getTrustManagers() {
         return new TrustManager[]{DUMMY_TRUST_MANAGER};

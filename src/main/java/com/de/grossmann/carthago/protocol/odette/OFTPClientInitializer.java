@@ -1,8 +1,6 @@
 package com.de.grossmann.carthago.protocol.odette;
 
 
-import javax.net.ssl.SSLEngine;
-
 import com.de.grossmann.carthago.protocol.odette.codec.CommandDecoder;
 import com.de.grossmann.carthago.protocol.odette.codec.Transport;
 import io.netty.channel.Channel;
@@ -10,15 +8,23 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.ssl.SslHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLEngine;
 
 
 public class OFTPClientInitializer extends ChannelInitializer<Channel> {
+    private static final Logger LOGGER;
+
+    static {
+        LOGGER = LoggerFactory.getLogger(OFTPClientInitializer.class);
+    }
+
     private Transport transport = Transport.TCPIP;
 
     // TODO maybe we could get the constants from the StreamTransmissionHeader class
-    // TODO what is is max frame length in our case (MAX_STB_SIZE?)
+    // TODO what is is max frame length in our case (MAX_SIZE?)
     private static final int MAX_FRAME_LENGTH = 8192;
 
     // The length field starts at second byte.
@@ -45,7 +51,7 @@ public class OFTPClientInitializer extends ChannelInitializer<Channel> {
         switch (this.transport) {
             case TLS:
                 SSLEngine engine =
-                        OFTPSslContextFactory.getClientContext().createSSLEngine();
+                        OFTPSSLContextFactory.getClientContext().createSSLEngine();
                 engine.setUseClientMode(true);
                 engine.setEnabledProtocols(new String[]{"TLSv1"});
 
