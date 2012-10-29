@@ -5,9 +5,9 @@ public class StreamTransmissionBuffer {
     public static final int MAX_STB_SIZE = 100003;
 
     private final StreamTransmissionHeader sth;
-    private final OdetteExchangeBuffer oeb;
+    private final byte[] oeb;
 
-    public StreamTransmissionBuffer(StreamTransmissionHeader sth, OdetteExchangeBuffer oeb) {
+    public StreamTransmissionBuffer(StreamTransmissionHeader sth, byte[] oeb) {
         this.sth = sth;
         this.oeb = oeb;
     }
@@ -16,12 +16,12 @@ public class StreamTransmissionBuffer {
         return sth;
     }
 
-    public OdetteExchangeBuffer getOEB() {
+    public byte[] getOEB() {
         return oeb;
     }
     
     public boolean isValid() {
-        return (this.sth.getLength() == this.oeb.getLength() + StreamTransmissionHeader.STH_LENGTH) 
+        return (this.sth.getLength() == this.oeb.length + StreamTransmissionHeader.STH_LENGTH) 
                 && (this.sth.getLength() >= MIN_STB_SIZE && this.sth.getLength() <= MAX_STB_SIZE);
     }
 

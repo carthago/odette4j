@@ -13,7 +13,7 @@ public class App
     public static void main(String[] args) throws Exception
     {
         LOGGER.debug("START>");
-        OFTPClient client = new OFTPClient("10.33.101.186", 6619, Transport.TLS);
+        OFTPClient client = new OFTPClient("10.33.90.83", 6619, Transport.TLS);
         client.run();
     }
 }

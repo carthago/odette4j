@@ -2,7 +2,7 @@ package com.de.grossmann.carthago.protocol.odette;
 
 import javax.net.ssl.SSLEngine;
 
-import com.de.grossmann.carthago.protocol.odette.codec.OEBDecoder;
+import com.de.grossmann.carthago.protocol.odette.codec.CommandDecoder;
 import com.de.grossmann.carthago.protocol.odette.codec.Transport;
 
 import io.netty.channel.Channel;
@@ -62,7 +62,7 @@ public class OFTPClientInitializer extends ChannelInitializer<Channel>
                 pipeline.addLast("stb-framer", stbFrameDecoder);
 
             default:
-                pipeline.addLast("oeb-decoder", new OEBDecoder(true));
+                pipeline.addLast("oeb-decoder", new CommandDecoder(true));
                 //pipeline.addLast("decoder", new StringDecoder());
                 //pipeline.addLast("encoder", new StringEncoder());
 

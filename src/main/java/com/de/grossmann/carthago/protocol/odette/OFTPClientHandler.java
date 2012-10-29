@@ -5,16 +5,17 @@ import io.netty.channel.ChannelInboundMessageHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.de.grossmann.carthago.protocol.odette.codec.data.OdetteExchangeBuffer;
+import com.de.grossmann.carthago.protocol.odette.codec.data.command.Command;
 
-public class OFTPClientHandler extends ChannelInboundMessageHandlerAdapter<OdetteExchangeBuffer>
+public class OFTPClientHandler extends ChannelInboundMessageHandlerAdapter<Command>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(OFTPClientHandler.class);
 
     @Override
-    public void messageReceived(final ChannelHandlerContext channelHandlerContext, final OdetteExchangeBuffer oeb) throws Exception
+    public void messageReceived(final ChannelHandlerContext channelHandlerContext, final Command command) throws Exception
     {
-        LOGGER.debug(oeb.toString());
+        LOGGER.debug("RCV: " + command);
+        LOGGER.debug("DUMMY: doing some magic");
     }
 
     @Override

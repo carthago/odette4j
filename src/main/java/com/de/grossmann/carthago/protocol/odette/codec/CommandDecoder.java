@@ -1,8 +1,9 @@
 package com.de.grossmann.carthago.protocol.odette.codec;
 
-import com.de.grossmann.carthago.protocol.odette.codec.data.OdetteExchangeBuffer;
 import com.de.grossmann.carthago.protocol.odette.codec.data.StreamTransmissionBuffer;
 import com.de.grossmann.carthago.protocol.odette.codec.data.StreamTransmissionHeader;
+import com.de.grossmann.carthago.protocol.odette.codec.data.command.Command;
+import com.de.grossmann.carthago.protocol.odette.codec.data.command.CommandIdentifier;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,28 +11,28 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 
 import static com.de.grossmann.carthago.common.ByteUtils.byteToHalfBytes;
 
-public class OEBDecoder extends MessageToMessageDecoder<ByteBuf, OdetteExchangeBuffer> {
+public class CommandDecoder extends MessageToMessageDecoder<ByteBuf, Command> {
     
     private boolean useStreamTransmissionBuffer = true;
     
-    public OEBDecoder(final boolean useStreamTransmissionBuffer) {
+    public CommandDecoder(final boolean useStreamTransmissionBuffer) {
         super();
         
         this.useStreamTransmissionBuffer = useStreamTransmissionBuffer;
     }
     
     @Override
-    public OdetteExchangeBuffer decode(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+    public Command decode(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         
-        OdetteExchangeBuffer oeb;
+        Command command;
         
         if (this.useStreamTransmissionBuffer) {
-            oeb = readSTB(msg).getOEB();
+            command = CommandIdentifier.identifyCommand(readSTB(msg).getOEB());
         } else {
-            oeb = readOEB(msg);
+            command = readCommand(msg);
         }
         
-        return oeb;
+        return command;
     }
 
     public boolean isUseStreamTransmissionBuffer() {
@@ -39,15 +40,16 @@ public class OEBDecoder extends MessageToMessageDecoder<ByteBuf, OdetteExchangeB
     }
     
     private StreamTransmissionBuffer readSTB(final ByteBuf in) {
+        
         StreamTransmissionHeader sth = readSTH(in);
-        OdetteExchangeBuffer oeb = readOEB(in);
+        byte[] oeb = readOEB(in);
         
         StreamTransmissionBuffer stb = new StreamTransmissionBuffer(sth, oeb);
         if (stb.isValid()) {
             return stb;    
         } else {
             // TODO throw DecodingException
-            System.out.println("OEBDecoder.readSTB() - foo");
+            System.out.println("CommandDecoder.readSTB() - foo");
         }
         return null;
     }
@@ -65,13 +67,24 @@ public class OEBDecoder extends MessageToMessageDecoder<ByteBuf, OdetteExchangeB
             return sth;
         } else {
             // TODO throw DecodingException
-            System.out.println("STBDecoder.readHeader() - foo");
+            System.out.println("CommandDecoder.readSTH() - foo");
         }
 
         return null;
     }
 
-    private OdetteExchangeBuffer readOEB(final ByteBuf in) {
+    private byte[] readOEB(final ByteBuf in) {
+        
+        int payloadLength = in.readableBytes();
+        
+        byte[] payload = new byte[payloadLength];
+
+        in.readBytes(payload, 0, payloadLength);
+
+        return payload;
+    }
+    
+    private Command readCommand(final ByteBuf in) {
         
         int payloadLength = in.readableBytes();
         
@@ -80,10 +93,10 @@ public class OEBDecoder extends MessageToMessageDecoder<ByteBuf, OdetteExchangeB
         in.readBytes(payload, 0, payloadLength);
 
         if (payload.length == payloadLength) {
-            return new OdetteExchangeBuffer(payload);
+            return CommandIdentifier.identifyCommand(payload);
         } else {
             // TODO throw DecodingException
-            System.out.println("STBDecoder.readData() - foo");
+            System.out.println("CommandDecoder.readCommand() - foo");
         }
 
         return null;
