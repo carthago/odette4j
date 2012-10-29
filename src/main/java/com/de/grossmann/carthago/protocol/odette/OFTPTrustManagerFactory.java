@@ -1,15 +1,14 @@
 package com.de.grossmann.carthago.protocol.odette;
 
+import javax.net.ssl.ManagerFactoryParameters;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactorySpi;
+import javax.net.ssl.X509TrustManager;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-
-import javax.net.ssl.ManagerFactoryParameters;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactorySpi;
-import javax.net.ssl.X509TrustManager;
 
 public class OFTPTrustManagerFactory extends TrustManagerFactorySpi {
 
@@ -41,7 +40,7 @@ public class OFTPTrustManagerFactory extends TrustManagerFactorySpi {
     };
 
     public static TrustManager[] getTrustManagers() {
-        return new TrustManager[] { DUMMY_TRUST_MANAGER };
+        return new TrustManager[]{DUMMY_TRUST_MANAGER};
     }
 
     @Override

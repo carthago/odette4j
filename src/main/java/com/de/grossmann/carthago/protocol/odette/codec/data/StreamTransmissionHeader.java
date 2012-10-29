@@ -1,4 +1,4 @@
-/**    
+/**
  * 8.2.  Stream Transmission Header Format
  *
  *    The Stream Transmission Header is shown below.  The fields are
@@ -62,7 +62,7 @@ public class StreamTransmissionHeader {
         this.flags = STH_FLAGS;
         this.length = STH_LENGTH + length;
     }
-    
+
     public StreamTransmissionHeader(byte version, byte flags, int length) {
         this.version = version;
         this.flags = flags;

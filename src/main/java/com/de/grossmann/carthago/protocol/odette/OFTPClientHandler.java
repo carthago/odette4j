@@ -19,8 +19,7 @@ public class OFTPClientHandler extends ChannelInboundMessageHandlerAdapter<Comma
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
-    {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         LOGGER.warn("Unexpected exception from downstream.", cause);
         ctx.close();
     }

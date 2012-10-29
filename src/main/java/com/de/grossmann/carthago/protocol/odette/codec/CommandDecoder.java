@@ -17,10 +17,10 @@ public class CommandDecoder extends MessageToMessageDecoder<ByteBuf, Command> {
     
     public CommandDecoder(final boolean useStreamTransmissionBuffer) {
         super();
-        
+
         this.useStreamTransmissionBuffer = useStreamTransmissionBuffer;
     }
-    
+
     @Override
     public Command decode(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         
@@ -38,7 +38,7 @@ public class CommandDecoder extends MessageToMessageDecoder<ByteBuf, Command> {
     public boolean isUseStreamTransmissionBuffer() {
         return useStreamTransmissionBuffer;
     }
-    
+
     private StreamTransmissionBuffer readSTB(final ByteBuf in) {
         
         StreamTransmissionHeader sth = readSTH(in);
@@ -46,23 +46,23 @@ public class CommandDecoder extends MessageToMessageDecoder<ByteBuf, Command> {
         
         StreamTransmissionBuffer stb = new StreamTransmissionBuffer(sth, oeb);
         if (stb.isValid()) {
-            return stb;    
+            return stb;
         } else {
             // TODO throw DecodingException
             System.out.println("CommandDecoder.readSTB() - foo");
         }
         return null;
     }
-    
+
     private StreamTransmissionHeader readSTH(final ByteBuf in) {
-       
+
         byte[] sthVersionAndFlags = byteToHalfBytes(in.readByte());
         int sthLength = in.readMedium();
-        
+
         StreamTransmissionHeader sth = new StreamTransmissionHeader(sthVersionAndFlags[0],
                 sthVersionAndFlags[1],
                 sthLength);
-        
+
         if (sth.isValid()) {
             return sth;
         } else {
@@ -87,7 +87,7 @@ public class CommandDecoder extends MessageToMessageDecoder<ByteBuf, Command> {
     private Command readCommand(final ByteBuf in) {
         
         int payloadLength = in.readableBytes();
-        
+
         byte[] payload = new byte[payloadLength];
 
         in.readBytes(payload, 0, payloadLength);
