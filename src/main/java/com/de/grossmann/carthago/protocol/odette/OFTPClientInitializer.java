@@ -67,8 +67,7 @@ public class OFTPClientInitializer extends ChannelInitializer<Channel> {
                 channelPipeline.addLast("stb-framer", stbFrameDecoder);
             default:
 
-                channelPipeline.addLast("oeb-decoder", new CommandDecoder(true));
-                //pipeline.addLast("decoder", new StringDecoder());
+                channelPipeline.addLast("command-decoder", new CommandDecoder(true));
                 //pipeline.addLast("encoder", new StringEncoder());
 
                 // and then business logic.

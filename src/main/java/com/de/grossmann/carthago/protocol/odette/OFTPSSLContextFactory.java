@@ -56,16 +56,18 @@ public final class OFTPSSLContextFactory {
             serverContext = SSLContext.getInstance(PROTOCOL);
             serverContext.init(kmf.getKeyManagers(), null, null);
         } catch (Exception e) {
+            LOGGER.error("Unable to initialize the server ssl context.",e);
             throw new Error(
-                    "Failed to initialize the server-side SSLContext", e);
+                            "Unable to initialize the server ssl context.",e);
         }
 
         try {
             clientContext = SSLContext.getInstance(PROTOCOL);
             clientContext.init(null, OFTPTrustManagerFactory.getTrustManagers(), null);
         } catch (Exception e) {
+            LOGGER.error("Unable to initialize the client-side SSLContext.",e);
             throw new Error(
-                    "Failed to initialize the client-side SSLContext", e);
+                            "Unable to initialize the client-side SSLContext.",e);
         }
 
         SERVER_CONTEXT = serverContext;
