@@ -16,17 +16,17 @@ extends Command
 {
 	/**
 	 * Command Code Character.<br>
-	 * �X� SSID Command identifier.
+	 * 'X' SSID Command identifier.
 	 */
 	@OFTPType(position = 0, format = Format.F, type = Type.X, length = 1)
 	private CommandIdentifier ssidcmd;
 	/**
 	 * Protocol Release Level.<br>
 	 * Used to specify the level of the ODETTE-FTP protocol.<br>
-	 * �1� for Revision 1.2<br>
-	 * �2� for Revision 1.3<br>
-	 * �4� for Revision 1.4<br>
-	 * �5� for Revision 2.0
+	 * '1' for Revision 1.2<br>
+	 * '2' for Revision 1.3<br>
+	 * '4' for Revision 1.4<br>
+	 * '5' for Revision 2.0
 	 */
 	@OFTPType(position = 1, format = Format.F, type = Type._9, length = 1)
 	private Long ssidlev;

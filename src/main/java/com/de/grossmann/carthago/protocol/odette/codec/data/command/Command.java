@@ -11,6 +11,8 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import com.de.grossmann.carthago.protocol.odette.codec.data.OFTPType;
 
 /**
@@ -91,6 +93,10 @@ public abstract class Command
 				{
 					this.setBigIntegerByBytes(field, byteArray, oftpType);
 				}
+				else if (field.getType().isAssignableFrom(CommandIdentifier.class))
+				{
+				        this.setCommandIdentifierByBytes(field, byteArray, oftpType);
+				}
 			}
 		}
 		catch (NumberFormatException e)
@@ -144,6 +150,16 @@ public abstract class Command
 		newValue = new String(byteArray, oftpType.position(), oftpType.length(), Command.CODEPAGE);
 		BigInteger newBigInteger = BigInteger.valueOf(Long.parseLong(newValue));
 		field.set(this, newBigInteger);
+	}
+	
+	private final void setCommandIdentifierByBytes(Field field, final byte[] byteArray, final OFTPType oftpType)
+	throws UnsupportedEncodingException, IllegalArgumentException, IllegalAccessException, NumberFormatException
+	{
+	         // TODO besser machen :)
+	         char newValue;
+	         newValue = new String(byteArray, oftpType.position(), oftpType.length(), Command.CODEPAGE).charAt(0);
+	         CommandIdentifier newCommandIdentifier = CommandIdentifier.valueOf(newValue);
+	         field.set(this, newCommandIdentifier);
 	}
 
 	private final byte[] getBytesFromField(final Field field, final OFTPType type)

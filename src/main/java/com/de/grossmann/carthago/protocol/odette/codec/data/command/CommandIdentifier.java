@@ -1,6 +1,8 @@
 package com.de.grossmann.carthago.protocol.odette.codec.data.command;
 
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +29,17 @@ public enum CommandIdentifier {
         return this.identifier;
     }
     
+    public static CommandIdentifier valueOf(final char identifier) {
+        CommandIdentifier newCommandIdentifier = null;
+        
+        for (CommandIdentifier commandIdentifier : values()) {
+            if (commandIdentifier.getIdentifier() == identifier) {
+                newCommandIdentifier = commandIdentifier;
+            }
+        }
+        return newCommandIdentifier;
+    }
+    
     @Override    
     public String toString() {
         return new String(new char[]{this.identifier});
@@ -42,9 +55,8 @@ public enum CommandIdentifier {
         for (CommandIdentifier commandIdentifier : values()) {
             if (commandIdentifier.getIdentifier() == (char) odetteExchangeBuffer[0]) {
                 try {
-                    // TODO einen Weg finden, wie wir constructor args übergeben können
-                    command = (Command) commandIdentifier.getImplementation().newInstance();
-                } catch (InstantiationException | IllegalAccessException e) {
+                    command  = (Command)commandIdentifier.getImplementation().getConstructor(byte[].class).newInstance(odetteExchangeBuffer);
+                } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
                     LOGGER.error("Unable to create command from Odette Exchange Buffer.", e);
                 }
             }
