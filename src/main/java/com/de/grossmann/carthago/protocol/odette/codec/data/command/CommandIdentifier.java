@@ -26,7 +26,12 @@ public enum CommandIdentifier {
     public char getIdentifier() {
         return this.identifier;
     }
-
+    
+    @Override    
+    public String toString() {
+        return new String(new char[]{this.identifier});
+    }
+    
     public Class<?> getImplementation() {
         return this.implementation;
     }
@@ -37,8 +42,8 @@ public enum CommandIdentifier {
         for (CommandIdentifier commandIdentifier : values()) {
             if (commandIdentifier.getIdentifier() == (char) odetteExchangeBuffer[0]) {
                 try {
+                    // TODO einen Weg finden, wie wir constructor args übergeben können
                     command = (Command) commandIdentifier.getImplementation().newInstance();
-                    command.initialize(odetteExchangeBuffer);
                 } catch (InstantiationException | IllegalAccessException e) {
                     LOGGER.error("Unable to create command from Odette Exchange Buffer.", e);
                 }
