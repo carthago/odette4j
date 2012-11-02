@@ -1,4 +1,4 @@
-package com.de.grossmann.carthago.protocol.odette.codec.data;
+package com.de.grossmann.carthago.protocol.odette.data;
 
 import java.util.Arrays;
 

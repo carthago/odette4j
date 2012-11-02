@@ -1,9 +1,9 @@
 package com.de.grossmann.carthago.protocol.odette.codec;
 
-import com.de.grossmann.carthago.protocol.odette.codec.data.StreamTransmissionBuffer;
-import com.de.grossmann.carthago.protocol.odette.codec.data.StreamTransmissionHeader;
-import com.de.grossmann.carthago.protocol.odette.codec.data.command.Command;
-import com.de.grossmann.carthago.protocol.odette.codec.data.command.CommandIdentifier;
+import com.de.grossmann.carthago.protocol.odette.data.StreamTransmissionBuffer;
+import com.de.grossmann.carthago.protocol.odette.data.StreamTransmissionHeader;
+import com.de.grossmann.carthago.protocol.odette.data.command.Command;
+import com.de.grossmann.carthago.protocol.odette.data.command.CommandIdentifier;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;

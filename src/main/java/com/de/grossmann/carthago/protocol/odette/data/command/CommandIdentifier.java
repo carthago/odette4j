@@ -1,10 +1,10 @@
-package com.de.grossmann.carthago.protocol.odette.codec.data.command;
+package com.de.grossmann.carthago.protocol.odette.data.command;
 
-
-import java.lang.reflect.InvocationTargetException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationTargetException;
 
 public enum CommandIdentifier {
 
@@ -28,10 +28,10 @@ public enum CommandIdentifier {
     public char getIdentifier() {
         return this.identifier;
     }
-    
+
     public static CommandIdentifier valueOf(final char identifier) {
         CommandIdentifier newCommandIdentifier = null;
-        
+
         for (CommandIdentifier commandIdentifier : values()) {
             if (commandIdentifier.getIdentifier() == identifier) {
                 newCommandIdentifier = commandIdentifier;
@@ -39,12 +39,12 @@ public enum CommandIdentifier {
         }
         return newCommandIdentifier;
     }
-    
-    @Override    
+
+    @Override
     public String toString() {
         return new String(new char[]{this.identifier});
     }
-    
+
     public Class<?> getImplementation() {
         return this.implementation;
     }
@@ -55,7 +55,7 @@ public enum CommandIdentifier {
         for (CommandIdentifier commandIdentifier : values()) {
             if (commandIdentifier.getIdentifier() == (char) odetteExchangeBuffer[0]) {
                 try {
-                    command  = (Command)commandIdentifier.getImplementation().getConstructor(byte[].class).newInstance(odetteExchangeBuffer);
+                    command = (Command) commandIdentifier.getImplementation().getConstructor(byte[].class).newInstance(odetteExchangeBuffer);
                 } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
                     LOGGER.error("Unable to create command from Odette Exchange Buffer.", e);
                 }

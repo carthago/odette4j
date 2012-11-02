@@ -1,6 +1,6 @@
 package com.de.grossmann.carthago.protocol.odette;
 
-import com.de.grossmann.carthago.protocol.odette.codec.data.command.Command;
+import com.de.grossmann.carthago.protocol.odette.data.command.Command;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundMessageHandlerAdapter;
 import org.slf4j.Logger;
@@ -17,7 +17,6 @@ public class OFTPClientHandler extends ChannelInboundMessageHandlerAdapter<Comma
     @Override
     public void messageReceived(final ChannelHandlerContext channelHandlerContext, final Command command) throws Exception {
         LOGGER.debug("RCV: " + command);
-        LOGGER.debug("DUMMY: doing some magic");
     }
 
     @Override

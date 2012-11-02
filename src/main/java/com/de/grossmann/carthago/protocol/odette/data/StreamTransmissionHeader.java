@@ -43,7 +43,7 @@
  *    and liberal in what is accepted.
  *
  */
-package com.de.grossmann.carthago.protocol.odette.codec.data;
+package com.de.grossmann.carthago.protocol.odette.data;
 
 import static com.de.grossmann.carthago.common.ByteUtils.halfByteToBin;
 import static com.de.grossmann.carthago.common.ByteUtils.halfBytesToByte;

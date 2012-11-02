@@ -1,66 +1,81 @@
 package com.de.grossmann.carthago.protocol.odette;
 
 import com.de.grossmann.carthago.protocol.odette.codec.Transport;
+import com.de.grossmann.carthago.protocol.odette.data.command.Command;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OFTPClient {
 
-    private final String host;
-    private final int port;
-    private final Transport transport;
+    private static final Logger LOGGER;
 
-
-    public OFTPClient(final String host, final int port, final Transport transport) {
-        this.host = host;
-        this.port = port;
-        this.transport = transport;
+    static {
+        LOGGER = LoggerFactory.getLogger(OFTPClient.class);
     }
 
-    public void run() throws Exception {
-        Bootstrap bootstrap = new Bootstrap();
+    private final String host;
+    private final int port;
+    private final Bootstrap bootstrap;
+    private Channel channel;
+    private ChannelFuture writeFuture;
+
+    public OFTPClient(final String host, final int port, final Transport transport) {
+
+        this.host = host;
+        this.port = port;
+        this.bootstrap = new Bootstrap();
+
+        this.bootstrap.group(new NioEventLoopGroup())
+                .channel(NioSocketChannel.class)
+                .remoteAddress(host, port)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1000)
+                .handler(new OFTPClientInitializer(transport));
+    }
+
+    public void connect() {
         try {
-            bootstrap.group(new NioEventLoopGroup())
-                    .channel(NioSocketChannel.class)
-                    .remoteAddress(host, port)
-                    .handler(new OFTPClientInitializer(this.transport));
-
-            // Start the connection attempt.
-            Channel channel = bootstrap.connect().sync().channel();
-
-            // Read commands from the stdin.
-            ChannelFuture lastWriteFuture = null;
-            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            for (; ; ) {
-                String line = in.readLine();
-                if (line == null) {
-                    break;
-                }
-
-                // Sends the received line to the server.
-                lastWriteFuture = channel.write(line + "\r\n");
-
-                // If user typed the 'bye' command, wait until the server closes
-                // the connection.
-                if (line.toLowerCase().equals("bye")) {
-                    channel.closeFuture().sync();
-                    break;
-                }
-            }
-
-            // Wait until all messages are flushed before closing the channel.
-            if (lastWriteFuture != null) {
-                lastWriteFuture.sync();
-            }
+            this.channel = this.bootstrap.connect().syncUninterruptibly().channel();
+        } catch (Exception e) {
+            LOGGER.warn("Unable to connect to " + this.host + ":" + this.port + ". Reason = " + e.getMessage());
         } finally {
-            // The connection is closed automatically on shutdown.
-            bootstrap.shutdown();
+            this.bootstrap.shutdown();
+        }
+    }
+
+    public boolean isConnected() {
+        boolean connected = false;
+
+        if (this.channel != null) {
+            connected = this.channel.isActive();
+        }
+
+        return connected;
+    }
+
+    public void disconnect() {
+        // Wait until all messages are flushed before closing the channel.
+        if (this.writeFuture != null) {
+            try {
+                this.writeFuture.sync();
+            } catch (InterruptedException e) {
+                LOGGER.error("Unable to connect to " + this.bootstrap, e);
+            }
+        }
+        this.bootstrap.shutdown();
+    }
+
+    public void send(final Command command) {
+        if (this.channel != null && this.channel.isActive()) {
+            this.writeFuture = channel.write(command);
+        } else {
+            // TODO throw Exception
+            LOGGER.error("Unable to send command. Not connected.");
         }
     }
 }
