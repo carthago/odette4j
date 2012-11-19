@@ -1,6 +1,8 @@
 package com.de.grossmann.carthago.protocol.odette;
 
 import com.de.grossmann.carthago.protocol.odette.data.command.Command;
+import com.de.grossmann.carthago.protocol.odette.data.command.SSID;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundMessageHandlerAdapter;
 import org.slf4j.Logger;
@@ -21,7 +23,7 @@ public class OFTPClientHandler extends ChannelInboundMessageHandlerAdapter<Comma
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        LOGGER.warn("Unexpected exception from downstream.", cause);
+        LOGGER.warn("Unexpected exception from downstream. " + cause.getLocalizedMessage());
         ctx.close();
     }
 }

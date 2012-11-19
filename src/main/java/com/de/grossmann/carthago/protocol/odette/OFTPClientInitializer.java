@@ -21,7 +21,7 @@ public class OFTPClientInitializer extends ChannelInitializer<Channel> {
         LOGGER = LoggerFactory.getLogger(OFTPClientInitializer.class);
     }
 
-    private Transport transport = Transport.TCPIP;
+    private Transport transport = Transport.TCP;
 
     // TODO maybe we could get the constants from the StreamTransmissionHeader class
     // TODO what is is max frame length in our case (MAX_SIZE?)
@@ -56,7 +56,7 @@ public class OFTPClientInitializer extends ChannelInitializer<Channel> {
                 engine.setEnabledProtocols(new String[]{"TLSv1"});
 
                 channelPipeline.addLast("tls-handler", new SslHandler(engine));
-            case TCPIP:
+            case TCP:
                 LengthFieldBasedFrameDecoder stbFrameDecoder = new LengthFieldBasedFrameDecoder(
                         MAX_FRAME_LENGTH,
                         LENGTHFIELD_OFFESET,

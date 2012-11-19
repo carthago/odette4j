@@ -15,11 +15,13 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
-        LOGGER.debug("START>");
-        OFTPClient client = new OFTPClient("10.33.90.83", 6619, Transport.TLS);
+        LOGGER.debug("<START>");
+        OFTPClient client = new OFTPClient("192.168.56.101", 3305, Transport.TCP);
         client.connect();
-        System.out.println("-> " + client.isConnected());
-        client.send(new SSRM());
-        client.disconnect();
+        LOGGER.debug(client.isConnected() ? "<CONNECTED>" : "<UNCONNECTED>");
+        
+        
+
+       
     }
 }

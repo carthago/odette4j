@@ -57,10 +57,10 @@ public class StreamTransmissionHeader {
     private final byte flags;
     private final int length;
 
-    public StreamTransmissionHeader(int length) {
+    public StreamTransmissionHeader(int payloadLength) {
         this.version = STH_VERSION;
         this.flags = STH_FLAGS;
-        this.length = STH_LENGTH + length;
+        this.length = STH_LENGTH + payloadLength;
     }
 
     public StreamTransmissionHeader(byte version, byte flags, int length) {

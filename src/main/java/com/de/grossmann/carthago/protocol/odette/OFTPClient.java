@@ -43,7 +43,6 @@ public class OFTPClient {
             this.channel = this.bootstrap.connect().syncUninterruptibly().channel();
         } catch (Exception e) {
             LOGGER.warn("Unable to connect to " + this.host + ":" + this.port + ". Reason = " + e.getMessage());
-        } finally {
             this.bootstrap.shutdown();
         }
     }
