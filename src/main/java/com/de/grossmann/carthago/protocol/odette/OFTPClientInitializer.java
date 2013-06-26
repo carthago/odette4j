@@ -2,6 +2,7 @@ package com.de.grossmann.carthago.protocol.odette;
 
 
 import com.de.grossmann.carthago.protocol.odette.codec.CommandDecoder;
+import com.de.grossmann.carthago.protocol.odette.codec.CommandEncoder;
 import com.de.grossmann.carthago.protocol.odette.codec.Transport;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -66,9 +67,8 @@ public class OFTPClientInitializer extends ChannelInitializer<Channel> {
 
                 channelPipeline.addLast("stb-framer", stbFrameDecoder);
             default:
-
                 channelPipeline.addLast("command-decoder", new CommandDecoder(true));
-                //pipeline.addLast("encoder", new StringEncoder());
+                channelPipeline.addLast("command-encoder", new CommandEncoder(true));
 
                 // and then business logic.
                 channelPipeline.addLast("handler", new OFTPClientHandler());

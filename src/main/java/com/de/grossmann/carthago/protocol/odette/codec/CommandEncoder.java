@@ -30,16 +30,16 @@ public class CommandEncoder extends MessageToMessageEncoder<Command,ByteBuf> {
     @Override
     public ByteBuf encode(ChannelHandlerContext ctx, Command command) throws Exception {
 
-        ByteBuf byteBuf = Unpooled.EMPTY_BUFFER;
+        ByteBuf byteBuf;
 
         if (this.useStreamTransmissionBuffer) {
             StreamTransmissionBuffer streamTransmissionBuffer = createStreamTransmissionBuffer(command);
             
-            byteBuf.capacity(streamTransmissionBuffer.getStreamTransmissionHeader().getLength());
+            byteBuf = Unpooled.buffer(streamTransmissionBuffer.getStreamTransmissionHeader().getLength());
             byteBuf.writeBytes(streamTransmissionBuffer.getStreamTransmissionHeader().getBytes());
             byteBuf.writeBytes(streamTransmissionBuffer.getOdetteExchangeBuffer());
         } else {
-            byteBuf.capacity(command.getBytes().length);
+            byteBuf = Unpooled.buffer(command.getBytes().length);
             byteBuf.writeBytes(command.getBytes());
         }
 

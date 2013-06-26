@@ -35,6 +35,8 @@ public class OFTPClient {
                 .channel(NioSocketChannel.class)
                 .remoteAddress(host, port)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1000)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.SO_LINGER,0)
                 .handler(new OFTPClientInitializer(transport));
     }
 

@@ -131,7 +131,9 @@ public abstract class Command {
             if (field != null) {
                 Object fieldObject = field.get(this);
                 if (fieldObject != null) {
-                    if (field.getType().isAssignableFrom(String.class)) {
+                    if (field.getType().isAssignableFrom(CommandIdentifier.class)) {
+                        byteBuffer.put((byte)((CommandIdentifier)fieldObject).getIdentifier());
+                    } else if (field.getType().isAssignableFrom(String.class)) {
                         byteBuffer.put(this.getBytesFromString((String) fieldObject, type), 0, type.length());
                     } else if (field.getType().isAssignableFrom(Integer.class)) {
                         byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type), 0, type.length());
