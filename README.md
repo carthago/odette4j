@@ -8,3 +8,4 @@ OFTP 2 can encrypt and digitally sign message data, request signed receipts and 
 ************************
 
 [![Build Status](https://secure.travis-ci.org/carthago/odette4j.png)](http://travis-ci.org/carthago/odette4j)
+[![Build Status](https://drone.io/github.com/carthago/odette4j/status.png)](https://drone.io/github.com/carthago/odette4j/latest)
