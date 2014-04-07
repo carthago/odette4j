@@ -6,13 +6,16 @@ import com.de.grossmann.carthago.protocol.odette.data.command.Command;
 import com.de.grossmann.carthago.protocol.odette.data.command.CommandIdentifier;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import static com.de.grossmann.carthago.common.ByteUtils.byteToHalfBytes;
 
-public class CommandDecoder extends MessageToMessageDecoder<ByteBuf, Command> {
+public class CommandDecoder extends ByteToMessageDecoder {
 
     private static final Logger LOGGER;
 
@@ -28,23 +31,44 @@ public class CommandDecoder extends MessageToMessageDecoder<ByteBuf, Command> {
         this.useStreamTransmissionBuffer = useStreamTransmissionBuffer;
     }
 
-    @Override
-    public Command decode(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+//    @Override
+//    public Command decode(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+//
+//        Command command;
+//
+//        if (this.useStreamTransmissionBuffer) {
+//            StreamTransmissionBuffer streamTransmissionBuffer = readStreamTransmissionBuffer(msg);
+//            command = CommandIdentifier.identifyCommand(streamTransmissionBuffer.getOdetteExchangeBuffer());
+//        } else {
+//            command = readCommand(msg);
+//        }
+//
+//        return command;
+//    }
 
+    /**
+     * Decode the from one {@link io.netty.buffer.ByteBuf} to an other. This method will be called till either the input
+     * {@link io.netty.buffer.ByteBuf} has nothing to read anymore, till nothing was read from the input {@link io.netty.buffer.ByteBuf} or till
+     * this method returns {@code null}.
+     *
+     * @param ctx the {@link io.netty.channel.ChannelHandlerContext} which this {@link io.netty.handler.codec.ByteToMessageDecoder} belongs to
+     * @param in  the {@link io.netty.buffer.ByteBuf} from which to read data
+     * @param out the {@link java.util.List} to which decoded messages should be added
+     * @throws Exception is thrown if an error accour
+     */
+    @Override
+    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
+    {
         Command command;
 
         if (this.useStreamTransmissionBuffer) {
-            StreamTransmissionBuffer streamTransmissionBuffer = readStreamTransmissionBuffer(msg);
+            StreamTransmissionBuffer streamTransmissionBuffer = readStreamTransmissionBuffer(in);
             command = CommandIdentifier.identifyCommand(streamTransmissionBuffer.getOdetteExchangeBuffer());
         } else {
-            command = readCommand(msg);
+            command = readCommand(in);
         }
 
-        return command;
-    }
-
-    public boolean isUseStreamTransmissionBuffer() {
-        return useStreamTransmissionBuffer;
+        out.add(command);
     }
 
     private StreamTransmissionBuffer readStreamTransmissionBuffer(final ByteBuf in) throws CommandDecoderException {

@@ -18,26 +18,24 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         LOGGER.debug("<START>");
-        OFTPClient client = new OFTPClient("192.168.56.10", 6620, Transport.TLS);
-        client.connect();
-        LOGGER.debug(client.isConnected() ? "<CONNECTED>" : "<UNCONNECTED>");
+        OFTPClient client = new OFTPClient("rvsblade5", 3305, Transport.TCP);
 
-        SSID ssid = new SSID();
-        ssid.setSsidlev(5L);
-        ssid.setSsidcode("OEVOMIGWIN");
-        ssid.setSsidpswd("111111");
-        ssid.setSsidsdeb(99999L);
-        ssid.setSsidsr("B");
-        ssid.setSsidcmpr("N");
-        ssid.setSsidrest("N");
-        ssid.setSsidspec("N");
-        ssid.setSsidcred(999L);
-        ssid.setSsidauth("N");
-        ssid.setSsidrsv1("");
-        ssid.setSsiduser("");
-        ssid.setSsidcr("\r");
-
-        LOGGER.info("SND: " + ssid);
-        client.send(ssid);
+//        SSID ssid = new SSID();
+//        ssid.setSsidlev(5L);
+//        ssid.setSsidcode("OEVOMIGWIN");
+//        ssid.setSsidpswd("111111");
+//        ssid.setSsidsdeb(99999L);
+//        ssid.setSsidsr("B");
+//        ssid.setSsidcmpr("N");
+//        ssid.setSsidrest("N");
+//        ssid.setSsidspec("N");
+//        ssid.setSsidcred(999L);
+//        ssid.setSsidauth("N");
+//        ssid.setSsidrsv1("");
+//        ssid.setSsiduser("");
+//        ssid.setSsidcr("\r");
+//
+//        LOGGER.info("SND: " + ssid);
+//        client.send(ssid);
     }
 }
