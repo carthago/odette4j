@@ -23,8 +23,11 @@ public final class ESID
         extends Command {
 
     /**
-     * ESID Command, 'F'
+     * Command Code.<br>
+     * 'F' ESID Command identifier.
      */
+    @OFTPType(position = 0, format = Format.F, type = Type.X, length = 1)
+    private CommandIdentifier ssrmcmd;
     @OFTPType(position = 0, format = Format.F, type = Type.X, length = 1)
     private CommandIdentifier esidcmd;
     /**

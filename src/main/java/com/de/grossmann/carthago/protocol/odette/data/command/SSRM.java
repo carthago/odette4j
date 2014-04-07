@@ -1,14 +1,22 @@
-/**
- *
- */
 package com.de.grossmann.carthago.protocol.odette.data.command;
 
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType;
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Format;
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Type;
 
-/** @author Micha */
-@SuppressWarnings("unused")
+/**
+ * o-------------------------------------------------------------------o
+ * |       SSRM        Start Session Ready Message                     |
+ * |                                                                   |
+ * |       Start Session Phase     Initiator <---- Responder           |
+ * |-------------------------------------------------------------------|
+ * | Pos | Field     | Description                           | Format  |
+ * |-----+-----------+---------------------------------------+---------|
+ * |   0 | SSRMCMD   | SSRM Command, 'I'                     | F X(1)  |
+ * |   1 | SSRMMSG   | Ready Message, 'ODETTE FTP READY '    | F X(17) |
+ * |  18 | SSRMCR    | Carriage Return                       | F X(1)  |
+ * o-------------------------------------------------------------------o
+ */
 public final class SSRM
         extends Command {
     /**

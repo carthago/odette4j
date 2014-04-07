@@ -10,6 +10,7 @@ public enum CommandIdentifier {
 
     SSRM('I', SSRM.class),
     SSID('X', SSID.class),
+    CD('R', CD.class),
     ESID('F', ESID.class);
 
     private final static Logger LOGGER;

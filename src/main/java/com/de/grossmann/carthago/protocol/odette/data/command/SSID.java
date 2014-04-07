@@ -1,13 +1,33 @@
-/**
- *
- */
 package com.de.grossmann.carthago.protocol.odette.data.command;
 
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType;
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Format;
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Type;
 
-/** @author Micha */
+/**
+ * o-------------------------------------------------------------------o
+ * |       SSID        Start Session                                   |
+ * |                                                                   |
+ * |       Start Session Phase     Initiator <---> Responder           |
+ * |-------------------------------------------------------------------|
+ * | Pos | Field     | Description                           | Format  |
+ * |-----+-----------+---------------------------------------+---------|
+ * |   0 | SSIDCMD   | SSID Command 'X'                      | F X(1)  |
+ * |   1 | SSIDLEV   | Protocol Release Level                | F 9(1)  |
+ * |   2 | SSIDCODE  | Initiator's Identification Code       | V X(25) |
+ * |  27 | SSIDPSWD  | Initiator's Password                  | V X(8)  |
+ * |  35 | SSIDSDEB  | Data Exchange Buffer Size             | V 9(5)  |
+ * |  40 | SSIDSR    | Send / Receive Capabilities (S/R/B)   | F X(1)  |
+ * |  41 | SSIDCMPR  | Buffer Compression Indicator (Y/N)    | F X(1)  |
+ * |  42 | SSIDREST  | Restart Indicator (Y/N)               | F X(1)  |
+ * |  43 | SSIDSPEC  | Special Logic Indicator (Y/N)         | F X(1)  |
+ * |  44 | SSIDCRED  | Credit                                | V 9(3)  |
+ * |  47 | SSIDAUTH  | Secure Authentication (Y/N)           | F X(1)  |
+ * |  48 | SSIDRSV1  | Reserved                              | F X(4)  |
+ * |  52 | SSIDUSER  | User Data                             | V X(8)  |
+ * |  60 | SSIDCR    | Carriage Return                       | F X(1)  |
+ * o-------------------------------------------------------------------o
+ */
 public final class SSID
         extends Command {
     /**
@@ -95,132 +115,184 @@ public final class SSID
         super.setBytes(byteArray);
     }
 
-    /** @return the ssidlev */
+    /**
+     * @return the ssidlev
+     */
     public final Long getSsidlev() {
         return ssidlev;
     }
 
-    /** @param ssidlev the ssidlev to set */
+    /**
+     * @param ssidlev the ssidlev to set
+     */
     public final void setSsidlev(Long ssidlev) {
         this.ssidlev = ssidlev;
     }
 
-    /** @return the ssidcode */
+    /**
+     * @return the ssidcode
+     */
     public final String getSsidcode() {
         return ssidcode;
     }
 
-    /** @param ssidcode the ssidcode to set */
+    /**
+     * @param ssidcode the ssidcode to set
+     */
     public final void setSsidcode(String ssidcode) {
         this.ssidcode = ssidcode;
     }
 
-    /** @return the ssidpswd */
+    /**
+     * @return the ssidpswd
+     */
     public final String getSsidpswd() {
         return ssidpswd;
     }
 
-    /** @param ssidpswd the ssidpswd to set */
+    /**
+     * @param ssidpswd the ssidpswd to set
+     */
     public final void setSsidpswd(String ssidpswd) {
         this.ssidpswd = ssidpswd;
     }
 
-    /** @return the ssidsdeb */
+    /**
+     * @return the ssidsdeb
+     */
     public final Long getSsidsdeb() {
         return ssidsdeb;
     }
 
-    /** @param ssidsdeb the ssidsdeb to set */
+    /**
+     * @param ssidsdeb the ssidsdeb to set
+     */
     public final void setSsidsdeb(Long ssidsdeb) {
         this.ssidsdeb = ssidsdeb;
     }
 
-    /** @return the ssidsr */
+    /**
+     * @return the ssidsr
+     */
     public final String getSsidsr() {
         return ssidsr;
     }
 
-    /** @param ssidsr the ssidsr to set */
+    /**
+     * @param ssidsr the ssidsr to set
+     */
     public final void setSsidsr(String ssidsr) {
         this.ssidsr = ssidsr;
     }
 
-    /** @return the ssidcmpr */
+    /**
+     * @return the ssidcmpr
+     */
     public final String getSsidcmpr() {
         return ssidcmpr;
     }
 
-    /** @param ssidcmpr the ssidcmpr to set */
+    /**
+     * @param ssidcmpr the ssidcmpr to set
+     */
     public final void setSsidcmpr(String ssidcmpr) {
         this.ssidcmpr = ssidcmpr;
     }
 
-    /** @return the ssidrest */
+    /**
+     * @return the ssidrest
+     */
     public final String getSsidrest() {
         return ssidrest;
     }
 
-    /** @param ssidrest the ssidrest to set */
+    /**
+     * @param ssidrest the ssidrest to set
+     */
     public final void setSsidrest(String ssidrest) {
         this.ssidrest = ssidrest;
     }
 
-    /** @return the ssidspec */
+    /**
+     * @return the ssidspec
+     */
     public final String getSsidspec() {
         return ssidspec;
     }
 
-    /** @param ssidspec the ssidspec to set */
+    /**
+     * @param ssidspec the ssidspec to set
+     */
     public final void setSsidspec(String ssidspec) {
         this.ssidspec = ssidspec;
     }
 
-    /** @return the ssidcred */
+    /**
+     * @return the ssidcred
+     */
     public final Long getSsidcred() {
         return ssidcred;
     }
 
-    /** @param ssidcred the ssidcred to set */
+    /**
+     * @param ssidcred the ssidcred to set
+     */
     public final void setSsidcred(Long ssidcred) {
         this.ssidcred = ssidcred;
     }
 
-    /** @return the ssidauth */
+    /**
+     * @return the ssidauth
+     */
     public final String getSsidauth() {
         return ssidauth;
     }
 
-    /** @param ssidauth the ssidauth to set */
+    /**
+     * @param ssidauth the ssidauth to set
+     */
     public final void setSsidauth(String ssidauth) {
         this.ssidauth = ssidauth;
     }
 
-    /** @return the ssidrsv1 */
+    /**
+     * @return the ssidrsv1
+     */
     public final String getSsidrsv1() {
         return ssidrsv1;
     }
 
-    /** @param ssidrsv1 the ssidrsv1 to set */
+    /**
+     * @param ssidrsv1 the ssidrsv1 to set
+     */
     public final void setSsidrsv1(String ssidrsv1) {
         this.ssidrsv1 = ssidrsv1;
     }
 
-    /** @return the ssiduser */
+    /**
+     * @return the ssiduser
+     */
     public final String getSsiduser() {
         return ssiduser;
     }
 
-    /** @param ssiduser the ssiduser to set */
+    /**
+     * @param ssiduser the ssiduser to set
+     */
     public final void setSsiduser(String ssiduser) {
         this.ssiduser = ssiduser;
     }
 
-    /** @return the ssidcr */
+    /**
+     * @return the ssidcr
+     */
     public final String getSsidcr() {
         return ssidcr;
     }
 
-    /** @param ssidcr the ssidcr to set */
+    /**
+     * @param ssidcr the ssidcr to set
+     */
     public final void setSsidcr(String ssidcr) {
         this.ssidcr = ssidcr;
     }
