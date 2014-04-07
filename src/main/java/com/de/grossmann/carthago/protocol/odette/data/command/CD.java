@@ -21,7 +21,7 @@ public class CD extends Command {
      * Command Code.<br>
      * 'R' CD Command identifier.
      */
-    @OFTPType(position = 0, format = OFTPType.Format.F, type = OFTPType.Type.X, length = 1)
+    @OFTPType(position = 0, field = OFTPType.Field.CDCMD, format = OFTPType.Format.F, type = OFTPType.Type.X, length = 1)
     private CommandIdentifier cdcmd;
 
     public CD() {

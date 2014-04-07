@@ -19,7 +19,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         LOGGER.debug("<START>");
 
-        OFTPClient client = new OFTPClient("tardis.grossmann.de.com", 3305, Transport.TCP);
+        OFTPClient client = new OFTPClient("MyTestServer", 3305, Transport.TCP);
 
 
     }

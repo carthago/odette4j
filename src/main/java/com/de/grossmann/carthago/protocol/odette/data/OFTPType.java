@@ -8,17 +8,37 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** @author Micha */
+/**
+ * @author Micha
+ */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OFTPType {
     int position();
+
+    Field field();
 
     Format format();
 
     Type type();
 
     int length();
+
+    enum Field {
+        SSRMCMD,  SSRMMSG,  SSRMCR,
+
+        SSIDCMD,   SSIDLEV,  SSIDCODE,
+        SSIDPSWD,  SSIDSDEB, SSIDSR,
+        SSIDCMPR,  SSIDREST, SSIDSPEC,
+        SSIDCRED,  SSIDAUTH, SSIDRSV1,
+        SSIDUSER,  SSIDCR,
+
+        ESIDCMD,   ESIDREAS, ESIDREASL,
+        ESIDREAST, ESIDCR,
+
+        CDCMD;
+
+    }
 
     enum Format {
         F,

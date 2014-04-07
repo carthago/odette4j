@@ -22,33 +22,19 @@ import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Type;
 public final class ESID
         extends Command {
 
-    /**
-     * Command Code.<br>
-     * 'F' ESID Command identifier.
-     */
-    @OFTPType(position = 0, format = Format.F, type = Type.X, length = 1)
-    private CommandIdentifier ssrmcmd;
-    @OFTPType(position = 0, format = Format.F, type = Type.X, length = 1)
+    @OFTPType(position = 0, field = OFTPType.Field.ESIDCMD, format = Format.F, type = Type.X, length = 1)
     private CommandIdentifier esidcmd;
-    /**
-     *  Reason Code
-     */
-    @OFTPType(position = 1, format = Format.F, type = Type._9, length = 2)
+
+    @OFTPType(position = 1, field = OFTPType.Field.ESIDREAS, format = Format.F, type = Type._9, length = 2)
     private Long esidreas;
-    /**
-     * Reason Text Length
-     */
-    @OFTPType(position = 3, format = Format.V, type = Type._9, length = 3)
+
+    @OFTPType(position = 3, field = OFTPType.Field.ESIDREASL, format = Format.V, type = Type._9, length = 3)
     private String esidreasl;
-    /**
-     * Reason Text
-     */
-    @OFTPType(position = 6, format = Format.V, type = Type.T, length = 9999)
+
+    @OFTPType(position = 6, field = OFTPType.Field.ESIDREAST, format = Format.V, type = Type.T, length = OFTPType.Field.ESIDREASL)
     private String esidreast;
-    /**
-     * Carriage Return
-     */
-    @OFTPType(position = 9999, format = Format.F, type = Type.X, length = 1)
+
+    @OFTPType(position = OFTPType.Field.ESIDREAST, field = OFTPType.Field.ESIDCR, format = Format.F, type = Type.X, length = 1)
     private String esidcr;
 
     public ESID() {

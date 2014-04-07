@@ -23,21 +23,21 @@ public final class SSRM
      * Command Code.<br>
      * 'I' SSRM Command identifier.
      */
-    @OFTPType(position = 0, format = Format.F, type = Type.X, length = 1)
+    @OFTPType(position = 0, field = OFTPType.Field.SSRMCMD, format = Format.F, type = Type.X, length = 1)
     private CommandIdentifier ssrmcmd;
 
     /**
      * Ready Message.<br>
      * 'ODETTE FTP READY '.
      */
-    @OFTPType(position = 1, format = Format.F, type = Type.X, length = 17)
+    @OFTPType(position = 1, field = OFTPType.Field.SSRMMSG, format = Format.F, type = Type.X, length = 17)
     private String ssrmmsg;
 
     /**
      * Carriage Return.<br>
      * Character with hex value '0D' or '8D'.
      */
-    @OFTPType(position = 18, format = Format.F, type = Type.X, length = 1)
+    @OFTPType(position = 18, field = OFTPType.Field.SSRMCR, format = Format.F, type = Type.X, length = 1)
     private String ssrmcr;
 
     public SSRM() {
