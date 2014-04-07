@@ -9,7 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 public enum CommandIdentifier {
 
     SSRM('I', SSRM.class),
-    SSID('X', SSID.class);
+    SSID('X', SSID.class),
+    ESID('F', ESID.class);
 
     private final static Logger LOGGER;
 

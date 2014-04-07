@@ -38,7 +38,7 @@ public class OFTPClientHandler extends ChannelHandlerAdapter
 
         SSID ssid = new SSID();
         ssid.setSsidlev(5L);
-        ssid.setSsidcode("OEVOMIGWIN");
+        ssid.setSsidcode("ODEVLAB");
         ssid.setSsidpswd("111111");
         ssid.setSsidsdeb(99999L);
         ssid.setSsidsr("B");
@@ -51,15 +51,9 @@ public class OFTPClientHandler extends ChannelHandlerAdapter
         ssid.setSsiduser("");
         ssid.setSsidcr("\r");
 
-        ctx.writeAndFlush(ssid);
+        ctx.write(ssid);
+        ctx.flush();
     }
-
-    //    @Override
-//    public void messageReceived(final ChannelHandlerContext channelHandlerContext, final Command command) throws Exception {
-//        ActorSystem protocolAdapter = ActorSystem.create("ProtocolAdapter");
-//        ActorRef commandSender = protocolAdapter.actorOf(new Props(OFTPStateMachine.class));
-//        commandSender.tell(command,commandSender);
-//    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

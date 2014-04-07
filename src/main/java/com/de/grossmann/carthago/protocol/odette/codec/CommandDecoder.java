@@ -31,21 +31,6 @@ public class CommandDecoder extends ByteToMessageDecoder {
         this.useStreamTransmissionBuffer = useStreamTransmissionBuffer;
     }
 
-//    @Override
-//    public Command decode(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-//
-//        Command command;
-//
-//        if (this.useStreamTransmissionBuffer) {
-//            StreamTransmissionBuffer streamTransmissionBuffer = readStreamTransmissionBuffer(msg);
-//            command = CommandIdentifier.identifyCommand(streamTransmissionBuffer.getOdetteExchangeBuffer());
-//        } else {
-//            command = readCommand(msg);
-//        }
-//
-//        return command;
-//    }
-
     /**
      * Decode the from one {@link io.netty.buffer.ByteBuf} to an other. This method will be called till either the input
      * {@link io.netty.buffer.ByteBuf} has nothing to read anymore, till nothing was read from the input {@link io.netty.buffer.ByteBuf} or till
