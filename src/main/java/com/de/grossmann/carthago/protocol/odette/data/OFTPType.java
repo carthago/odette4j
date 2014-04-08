@@ -15,44 +15,54 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OFTPType {
 
-    int position() default Integer.MAX_VALUE;
+    public static int NO_POSITION = -1;
+    public static int NO_LENGTH   = -1;
 
-    Field afterField() default Field.NONE;
+    int    position() default NO_POSITION;
+    int    length()   default NO_LENGTH;
 
-    Field field();
-
+    Field  field();
     Format format();
-
-    Type type();
-
-    int length() default 0;
-
-    Field lengthField() default Field.NONE;
+    Type   type();
+    Field  lengthField() default Field.NONE;
 
     enum Field {
-        NONE,
+        NONE(-1),
 
-        SSRMCMD,  SSRMMSG,  SSRMCR,
+        SSRMCMD(0),    SSRMMSG(1),   SSRMCR(2),
 
-        SSIDCMD,   SSIDLEV,  SSIDCODE,
-        SSIDPSWD,  SSIDSDEB, SSIDSR,
-        SSIDCMPR,  SSIDREST, SSIDSPEC,
-        SSIDCRED,  SSIDAUTH, SSIDRSV1,
-        SSIDUSER,  SSIDCR,
+        SSIDCMD(0),    SSIDLEV(1),   SSIDCODE(2),
+        SSIDPSWD(3),   SSIDSDEB(4),  SSIDSR(5),
+        SSIDCMPR(6),   SSIDREST(7),  SSIDSPEC(8),
+        SSIDCRED(9),   SSIDAUTH(10), SSIDRSV1(11),
+        SSIDUSER(12),  SSIDCR(13),
 
-        ESIDCMD,   ESIDREAS, ESIDREASL,
-        ESIDREAST, ESIDCR,
+        ESIDCMD(0),    ESIDREAS(1),  ESIDREASL(2),
+        ESIDREAST(3),  ESIDCR(4),
 
-        CDCMD;
+        CDCMD(0);
 
+        private final int position;
+
+        private Field(final int position)
+        {
+            this.position = position;
+        }
+
+        public int getPosition()
+        {
+            return this.position;
+        }
     }
 
-    enum Format {
+    enum Format
+    {
         F,
         V;
     }
 
-    enum Type {
+    enum Type
+    {
         X("X"),
         _9("9"),
         U("U"),
@@ -60,12 +70,14 @@ public @interface OFTPType {
 
         private final String value;
 
-        private Type(String value) {
+        private Type(final String value)
+        {
             this.value = value;
         }
 
         @Override
-        public String toString() {
+        public String toString()
+        {
             return this.value;
         }
     }

@@ -50,6 +50,8 @@ public class CommandEncoder extends MessageToByteEncoder<Command>
         } else {
             out.writeBytes(msg.getBytes());
         }
+
+        LOGGER.info(">>> " + msg);
     }
 
     private StreamTransmissionBuffer createStreamTransmissionBuffer(final Command command) {

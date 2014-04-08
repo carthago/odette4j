@@ -27,15 +27,15 @@ public final class ESID
     private CommandIdentifier esidcmd;
 
     @OFTPType(position = 1, field = Field.ESIDREAS, format = Format.F, type = Type._9, length = 2)
-    private Long esidreas;
+    private Integer esidreas;
 
     @OFTPType(position = 3, field = Field.ESIDREASL, format = Format.V, type = Type._9, length = 3)
-    private String esidreasl;
+    private Integer esidreasl;
 
     @OFTPType(position = 6, field = Field.ESIDREAST, format = Format.V, type = Type.T, lengthField = Field.ESIDREASL)
     private String esidreast;
 
-    @OFTPType(afterField = Field.ESIDREAST, field = Field.ESIDCR, format = Format.F, type = Type.X, length = 1)
+    @OFTPType(field = Field.ESIDCR, format = Format.F, type = Type.X, length = 1)
     private String esidcr;
 
     public ESID() {

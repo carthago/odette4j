@@ -1,8 +1,5 @@
 package com.de.grossmann.carthago.protocol.odette;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
 import com.de.grossmann.carthago.protocol.odette.data.command.Command;
 import com.de.grossmann.carthago.protocol.odette.data.command.SSID;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -21,6 +18,21 @@ public class OFTPClientHandler extends ChannelHandlerAdapter
     }
 
     /**
+     * Calls {@link io.netty.channel.ChannelHandlerContext#fireChannelActive()} to forward
+     * to the next {@link io.netty.channel.ChannelHandler} in the {@link io.netty.channel.ChannelPipeline}.
+     * <p/>
+     * Sub-classes may override this method to change behavior.
+     *
+     * @param ctx
+     */
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception
+    {
+        LOGGER.debug("Channel {} activated. {} -> {}", new Object[]{ctx.channel().id(), ctx.channel().localAddress(), ctx.channel().remoteAddress()});
+        super.channelActive(ctx);
+    }
+
+    /**
      * Calls {@link io.netty.channel.ChannelHandlerContext#fireChannelRead(Object)} to forward
      * to the next {@link io.netty.channel.ChannelHandler} in the {@link io.netty.channel.ChannelPipeline}.
      * <p/>
@@ -34,7 +46,7 @@ public class OFTPClientHandler extends ChannelHandlerAdapter
     {
         Command command = (Command)msg;
 
-        LOGGER.info("RCV: " + command);
+        LOGGER.info("<<< " + command);
 
         SSID ssid = new SSID();
         ssid.setSsidlev(5L);
