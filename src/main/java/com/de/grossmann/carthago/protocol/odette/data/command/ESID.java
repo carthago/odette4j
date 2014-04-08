@@ -1,6 +1,7 @@
 package com.de.grossmann.carthago.protocol.odette.data.command;
 
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType;
+import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Field;
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Format;
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Type;
 
@@ -22,19 +23,19 @@ import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Type;
 public final class ESID
         extends Command {
 
-    @OFTPType(position = 0, field = OFTPType.Field.ESIDCMD, format = Format.F, type = Type.X, length = 1)
+    @OFTPType(position = 0, field = Field.ESIDCMD, format = Format.F, type = Type.X, length = 1)
     private CommandIdentifier esidcmd;
 
-    @OFTPType(position = 1, field = OFTPType.Field.ESIDREAS, format = Format.F, type = Type._9, length = 2)
+    @OFTPType(position = 1, field = Field.ESIDREAS, format = Format.F, type = Type._9, length = 2)
     private Long esidreas;
 
-    @OFTPType(position = 3, field = OFTPType.Field.ESIDREASL, format = Format.V, type = Type._9, length = 3)
+    @OFTPType(position = 3, field = Field.ESIDREASL, format = Format.V, type = Type._9, length = 3)
     private String esidreasl;
 
-    @OFTPType(position = 6, field = OFTPType.Field.ESIDREAST, format = Format.V, type = Type.T, length = OFTPType.Field.ESIDREASL)
+    @OFTPType(position = 6, field = Field.ESIDREAST, format = Format.V, type = Type.T, lengthField = Field.ESIDREASL)
     private String esidreast;
 
-    @OFTPType(position = OFTPType.Field.ESIDREAST, field = OFTPType.Field.ESIDCR, format = Format.F, type = Type.X, length = 1)
+    @OFTPType(afterField = Field.ESIDREAST, field = Field.ESIDCR, format = Format.F, type = Type.X, length = 1)
     private String esidcr;
 
     public ESID() {

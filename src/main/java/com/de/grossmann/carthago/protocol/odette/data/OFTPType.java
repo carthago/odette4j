@@ -14,7 +14,10 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OFTPType {
-    int position();
+
+    int position() default Integer.MAX_VALUE;
+
+    Field afterField() default Field.NONE;
 
     Field field();
 
@@ -22,9 +25,13 @@ public @interface OFTPType {
 
     Type type();
 
-    int length();
+    int length() default 0;
+
+    Field lengthField() default Field.NONE;
 
     enum Field {
+        NONE,
+
         SSRMCMD,  SSRMMSG,  SSRMCR,
 
         SSIDCMD,   SSIDLEV,  SSIDCODE,
