@@ -1,4 +1,4 @@
-package com.de.grossmann.carthago.protocol.odette.data.command;
+package com.de.grossmann.carthago.protocol.odette.data.commands;
 
 
 import org.slf4j.Logger;

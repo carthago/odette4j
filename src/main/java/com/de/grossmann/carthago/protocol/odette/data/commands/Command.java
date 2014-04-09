@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.de.grossmann.carthago.protocol.odette.data.command;
+package com.de.grossmann.carthago.protocol.odette.data.commands;
 
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType;
 

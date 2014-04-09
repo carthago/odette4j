@@ -2,13 +2,10 @@ package com.de.grossmann.carthago.protocol.odette.codec;
 
 import com.de.grossmann.carthago.protocol.odette.data.StreamTransmissionBuffer;
 import com.de.grossmann.carthago.protocol.odette.data.StreamTransmissionHeader;
-import com.de.grossmann.carthago.protocol.odette.data.command.Command;
+import com.de.grossmann.carthago.protocol.odette.data.commands.Command;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.MessageToByteEncoder;
-import io.netty.handler.codec.MessageToMessageEncoder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,9 +1,9 @@
 package com.de.grossmann.carthago.protocol.odette;
 
-import com.de.grossmann.carthago.protocol.odette.data.command.Command;
-import com.de.grossmann.carthago.protocol.odette.data.command.ESID;
-import com.de.grossmann.carthago.protocol.odette.data.command.SSID;
-import com.de.grossmann.carthago.protocol.odette.data.command.SSRM;
+import com.de.grossmann.carthago.protocol.odette.data.commands.Command;
+import com.de.grossmann.carthago.protocol.odette.data.commands.ESID;
+import com.de.grossmann.carthago.protocol.odette.data.commands.SSID;
+import com.de.grossmann.carthago.protocol.odette.data.commands.SSRM;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 

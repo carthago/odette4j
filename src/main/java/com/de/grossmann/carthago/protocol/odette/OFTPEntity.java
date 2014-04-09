@@ -19,13 +19,13 @@ package com.de.grossmann.carthago.protocol.odette;
  * Mode                      Sender-only, Receiver-only, Both.
  * Pswd           String     Password, used to build O.SSID.Pswd
  * Req-buf        Primitive  Input event (F_XXX_RQ) stored in WF_CD
- * state.
+ *                            state.
  * Restart        Yes/No     Restart in used as agreed.
  * Restart-pos    Integer    Used only during file opening.
  * Window         Integer    The credit value negotiated for the
- * session.
+ *                            session.
  * Caller         Yes/No     This entity initiated the ODETTE-FTP
- * session.
+ *                            session.
  * Authentication Yes/No     Secure authentication in use as agreed
  * Challenge      Binary     Random challenge
  * ---------------------------------------------------------------------

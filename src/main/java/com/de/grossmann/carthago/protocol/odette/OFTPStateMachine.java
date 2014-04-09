@@ -1,10 +1,10 @@
 package com.de.grossmann.carthago.protocol.odette;
 
-import com.de.grossmann.carthago.protocol.odette.data.command.SSID;
+import com.de.grossmann.carthago.protocol.odette.data.commands.SSID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.de.grossmann.carthago.protocol.odette.data.command.Command;
+import com.de.grossmann.carthago.protocol.odette.data.commands.Command;
 
 import akka.actor.UntypedActor;
 
