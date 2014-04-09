@@ -7,7 +7,6 @@ import com.de.grossmann.carthago.protocol.odette.data.command.CommandIdentifier;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import io.netty.handler.codec.MessageToMessageDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,17 +14,20 @@ import java.util.List;
 
 import static com.de.grossmann.carthago.common.ByteUtils.byteToHalfBytes;
 
-public class CommandDecoder extends ByteToMessageDecoder {
+public class CommandDecoder extends ByteToMessageDecoder
+{
 
     private static final Logger LOGGER;
 
-    static {
+    static
+    {
         LOGGER = LoggerFactory.getLogger(CommandDecoder.class);
     }
 
     private boolean useStreamTransmissionBuffer = true;
 
-    public CommandDecoder(final boolean useStreamTransmissionBuffer) {
+    public CommandDecoder(final boolean useStreamTransmissionBuffer)
+    {
         super();
 
         this.useStreamTransmissionBuffer = useStreamTransmissionBuffer;
@@ -44,19 +46,36 @@ public class CommandDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
     {
-        Command command;
+        if (in.isReadable())
+        {
+            Command command;
 
-        if (this.useStreamTransmissionBuffer) {
-            StreamTransmissionBuffer streamTransmissionBuffer = readStreamTransmissionBuffer(in);
-            command = CommandIdentifier.identifyCommand(streamTransmissionBuffer.getOdetteExchangeBuffer());
-        } else {
-            command = readCommand(in);
+            if (this.useStreamTransmissionBuffer)
+            {
+                StreamTransmissionBuffer streamTransmissionBuffer = readStreamTransmissionBuffer(in);
+                command = CommandIdentifier.identifyCommand(streamTransmissionBuffer.getOdetteExchangeBuffer());
+            }
+            else
+            {
+                command = readCommand(in);
+            }
+
+            if (command != null)
+            {
+                LOGGER.debug("<<< " + command);
+                out.add(command);
+            }
         }
-
-        out.add(command);
     }
 
-    private StreamTransmissionBuffer readStreamTransmissionBuffer(final ByteBuf in) throws CommandDecoderException {
+    private StreamTransmissionBuffer readStreamTransmissionBuffer(final ByteBuf in) throws CommandDecoderException
+    {
+
+        if (!in.isReadable())
+        {
+            throw new CommandDecoderException("Unable to read StreamTransmissionBuffer.");
+        }
+
         StreamTransmissionBuffer streamTransmissionBuffer;
 
         StreamTransmissionHeader streamTransmissionHeader = readStreamTransmissionHeader(in);
@@ -64,33 +83,39 @@ public class CommandDecoder extends ByteToMessageDecoder {
 
         streamTransmissionBuffer = new StreamTransmissionBuffer(streamTransmissionHeader, odetteExchangeBuffer);
 
-        if (!streamTransmissionBuffer.isValid()) {
-            throw new CommandDecoderException();
+        if (!streamTransmissionBuffer.isValid())
+        {
+            throw new CommandDecoderException("Invalid StreamTransmissionBuffer read.");
         }
 
         return streamTransmissionBuffer;
     }
 
-    private StreamTransmissionHeader readStreamTransmissionHeader(final ByteBuf in) {
+    private StreamTransmissionHeader readStreamTransmissionHeader(final ByteBuf in) throws CommandDecoderException
+    {
+
+        if (!in.isReadable())
+        {
+            throw new CommandDecoderException("Unable to read StreamTransmissionHeader.");
+        }
 
         byte[] sthVersionAndFlags = byteToHalfBytes(in.readByte());
         int sthLength = in.readMedium();
 
-        StreamTransmissionHeader sth = new StreamTransmissionHeader(sthVersionAndFlags[0],
-                sthVersionAndFlags[1],
-                sthLength);
+        StreamTransmissionHeader streamTransmissionHeader = new StreamTransmissionHeader(sthVersionAndFlags[0],
+                                                                                         sthVersionAndFlags[1],
+                                                                                         sthLength);
 
-        if (sth.isValid()) {
-            return sth;
-        } else {
-            // TODO throw DecodingException
-            System.out.println("CommandDecoder.readStreamTransmissionHeader() - foo");
+        if (!streamTransmissionHeader.isValid())
+        {
+            throw new CommandDecoderException("Invalid StreamTransmissionHeader read.");
         }
 
-        return null;
+        return streamTransmissionHeader;
     }
 
-    private byte[] readOdetteExchangeBuffer(final ByteBuf in) {
+    private byte[] readOdetteExchangeBuffer(final ByteBuf in)
+    {
 
         int payloadLength = in.readableBytes();
 
@@ -101,7 +126,8 @@ public class CommandDecoder extends ByteToMessageDecoder {
         return payload;
     }
 
-    private Command readCommand(final ByteBuf in) {
+    private Command readCommand(final ByteBuf in)
+    {
 
         int payloadLength = in.readableBytes();
 
@@ -109,9 +135,12 @@ public class CommandDecoder extends ByteToMessageDecoder {
 
         in.readBytes(payload, 0, payloadLength);
 
-        if (payload.length == payloadLength) {
+        if (payload.length == payloadLength)
+        {
             return CommandIdentifier.identifyCommand(payload);
-        } else {
+        }
+        else
+        {
             // TODO throw DecodingException
             System.out.println("CommandDecoder.readCommand() - foo");
         }

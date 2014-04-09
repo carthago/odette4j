@@ -51,7 +51,7 @@ public class CommandEncoder extends MessageToByteEncoder<Command>
             out.writeBytes(msg.getBytes());
         }
 
-        LOGGER.info(">>> " + msg);
+        LOGGER.debug(">>> " + msg);
     }
 
     private StreamTransmissionBuffer createStreamTransmissionBuffer(final Command command) {
