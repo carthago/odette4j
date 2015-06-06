@@ -16,6 +16,7 @@ import javax.net.ssl.SSLEngine;
 
 
 public class OFTPClientInitializer extends ChannelInitializer<Channel> {
+
     private static final Logger LOGGER;
 
     static {
