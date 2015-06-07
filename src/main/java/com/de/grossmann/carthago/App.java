@@ -1,6 +1,7 @@
 package com.de.grossmann.carthago;
 
 import com.de.grossmann.carthago.protocol.odette.OFTPClient;
+import com.de.grossmann.carthago.protocol.odette.OFTPServer;
 import com.de.grossmann.carthago.protocol.odette.codec.Transport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +18,9 @@ public class App {
     public static void main(String[] args) throws Exception {
         LOGGER.debug("<START>");
 
-        OFTPClient client = new OFTPClient("MyTestServer", 3305, Transport.TCP);
 
-
+        OFTPServer server = new OFTPServer("localhost", 3305, Transport.TCP);
+        //OFTPClient client = new OFTPClient("localhost", 3305, Transport.TCP);
     }
 
 }
