@@ -31,7 +31,7 @@ public class OFTPServer {
                     .handler(new LoggingHandler(LogLevel.INFO)).childHandler(new OFTPServerInitializer(transport));
 
             // Start the server.
-            ChannelFuture f = b.bind(3305).sync();
+            ChannelFuture f = b.bind(host, port).sync();
 
             // Wait until the server socket is closed.
             f.channel().closeFuture().sync();
