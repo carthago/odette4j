@@ -1,5 +1,7 @@
 # odette4j
 
+[![Join the chat at https://gitter.im/carthago/odette4j](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/carthago/odette4j?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ************************
 The Odette File Transfer Protocol (OFTP) is a protocol used for EDI (Electronic Data Interchange) between two communications business partners. It comes from the Odette-Organisation (Organization for data exchange by teletransmission in Europe).
 OFTP 2 (ODETTE File Transfer Protocol) is a specification for the secure transfer of business documents over the Internet, ISDN and X.25 networks. A description of OFTP 1.3 can be found in RFC 2204, whilst OFTP 2 is defined in RFC 5024.
