@@ -18,9 +18,9 @@ public class App {
     public static void main(String[] args) throws Exception {
         LOGGER.debug("<START>");
 
+        OFTPServer server = new OFTPServer("10.0.0.38", 3305, Transport.TCP);
+        //OFTPClient client = new OFTPClient("nebulos.mirko-wodtke.de", 3305, Transport.TCP);
 
-        OFTPServer server = new OFTPServer("localhost", 3305, Transport.TCP);
-        //OFTPClient client = new OFTPClient("localhost", 3305, Transport.TCP);
     }
 
 }

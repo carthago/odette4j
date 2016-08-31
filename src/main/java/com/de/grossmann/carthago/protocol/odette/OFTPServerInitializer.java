@@ -29,7 +29,7 @@ public class OFTPServerInitializer extends ChannelInitializer<Channel> {
 
     // TODO maybe we could get the constants from the StreamTransmissionHeader class
     // TODO what is is max frame length in our case (MAX_SIZE?)
-    private static final int MAX_FRAME_LENGTH = 8192;
+    private static final int MAX_FRAME_LENGTH = 999999;
 
     // The length field starts at second byte.
     private static final int LENGTHFIELD_OFFESET = 1;

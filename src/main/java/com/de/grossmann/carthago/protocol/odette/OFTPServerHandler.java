@@ -1,18 +1,19 @@
 package com.de.grossmann.carthago.protocol.odette;
 
-import com.de.grossmann.carthago.protocol.odette.data.commands.Command;
-import com.de.grossmann.carthago.protocol.odette.data.commands.ESID;
-import com.de.grossmann.carthago.protocol.odette.data.commands.SSID;
-import com.de.grossmann.carthago.protocol.odette.data.commands.SSRM;
+import com.de.grossmann.carthago.protocol.odette.data.commands.*;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class OFTPServerHandler extends ChannelHandlerAdapter
 {
 
     private static final Logger LOGGER;
+
+    private AtomicInteger receivedDataPdus = new AtomicInteger(0);
 
     static {
         LOGGER = LoggerFactory.getLogger(OFTPServerHandler.class);
@@ -66,23 +67,52 @@ public class OFTPServerHandler extends ChannelHandlerAdapter
     private Command handleCommand(final ChannelHandlerContext ctx, final Command command) {
         Command response = null;
 
-        if (command instanceof SSRM)
-        {
+        if (command instanceof SSID) {
             response = new SSID();
             ((SSID)response).setSsidlev(5L);
-            ((SSID)response).setSsidcode("ODEVLAB2");
+            ((SSID)response).setSsidcode("O01472583424321");
             ((SSID)response).setSsidpswd("111111");
-            ((SSID)response).setSsidsdeb(99999L);
+            ((SSID)response).setSsidsdeb(4096L);
             ((SSID)response).setSsidsr("B");
             ((SSID)response).setSsidcmpr("N");
             ((SSID)response).setSsidrest("N");
             ((SSID)response).setSsidspec("N");
-            ((SSID)response).setSsidcred(999L);
+            ((SSID)response).setSsidcred(5L);
             ((SSID)response).setSsidauth("N");
             ((SSID)response).setSsidrsv1("");
             ((SSID)response).setSsiduser("");
             ((SSID)response).setSsidcr("\r");
-        } else if (command instanceof ESID) {
+        }
+        else if (command instanceof SFID)
+        {
+            response = new SFPA();
+            ((SFPA)response).setSfpacnt(0L);
+        }
+        else if (command instanceof  DATA)
+        {
+            if (this.receivedDataPdus.incrementAndGet() == 5)
+            {
+                response = new CDT();
+                this.receivedDataPdus.set(0);
+            }
+        }
+        else if (command instanceof EFID)
+        {
+            response = new EFPA();
+            ((EFPA)response).setEfpacd("N");
+        }
+        else if (command instanceof CD)
+        {
+            String txt = "Done. :)";
+
+            response = new ESID();
+            ((ESID)response).setEsidreas(0);
+            ((ESID)response).setEsidreasl(txt.length());
+            ((ESID)response).setEsidreast(txt);
+            ((ESID)response).setEsidcr("\r");
+        }
+        else if (command instanceof ESID)
+        {
             ctx.close();
         }
 

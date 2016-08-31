@@ -46,4 +46,35 @@ public final class ESID
         super.setBytes(byteArray);
     }
 
+    public Integer getEsidreas() {
+        return esidreas;
+    }
+
+    public void setEsidreas(Integer esidreas) {
+        this.esidreas = esidreas;
+    }
+
+    public Integer getEsidreasl() {
+        return esidreasl;
+    }
+
+    public void setEsidreasl(Integer esidreasl) {
+        this.esidreasl = esidreasl;
+    }
+
+    public String getEsidreast() {
+        return esidreast;
+    }
+
+    public void setEsidreast(String esidreast) {
+        this.esidreast = esidreast;
+    }
+
+    public String getEsidcr() {
+        return esidcr;
+    }
+
+    public void setEsidcr(String esidcr) {
+        this.esidcr = esidcr;
+    }
 }

@@ -10,8 +10,14 @@ public enum CommandIdentifier {
 
     SSRM('I', SSRM.class),
     SSID('X', SSID.class),
-    CD('R', CD.class),
-    ESID('F', ESID.class);
+    ESID('F', ESID.class),
+    SFID('H', SFID.class),
+    SFPA('2', SFPA.class),
+    DATA('D', DATA.class),
+    CDT('C',  CDT.class),
+    EFID('T', EFID.class),
+    EFPA('4', EFPA.class),
+    CD('R', CD.class);
 
     private final static Logger LOGGER;
 
@@ -22,7 +28,7 @@ public enum CommandIdentifier {
     private final char identifier;
     private final Class<?> implementation;
 
-    private CommandIdentifier(final char identifier, final Class<?> implementation) {
+    CommandIdentifier(final char identifier, final Class<?> implementation) {
         this.identifier = identifier;
         this.implementation = implementation;
     }

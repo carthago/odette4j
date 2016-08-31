@@ -30,14 +30,17 @@ import com.de.grossmann.carthago.protocol.odette.data.OFTPType.Type;
  */
 public final class SSID
         extends Command {
+
     /**
      * Command Code Character.<br>
      * 'X' SSID Command identifier.
      */
     @OFTPType(position = 0, field = OFTPType.Field.SSIDCMD, format = Format.F, type = Type.X, length = 1)
     private CommandIdentifier ssidcmd;
+
     /**
-     * Protocol Release Level.<br>
+     * Protocol Release Level<br>
+     *
      * Used to specify the level of the ODETTE-FTP protocol.<br>
      * '1' for Revision 1.2<br>
      * '2' for Revision 1.3<br>
@@ -46,61 +49,73 @@ public final class SSID
      */
     @OFTPType(position = 1, field = OFTPType.Field.SSIDLEV, format = Format.F, type = Type._9, length = 1)
     private Long ssidlev;
+
     /**
      *
      */
     @OFTPType(position = 2, field = OFTPType.Field.SSIDCODE, format = Format.V, type = Type.X, length = 25)
     private String ssidcode;
+
     /**
      *
      */
     @OFTPType(position = 27, field = OFTPType.Field.SSIDPSWD, format = Format.V, type = Type.X, length = 8)
     private String ssidpswd;
+
     /**
      *
      */
     @OFTPType(position = 35, field = OFTPType.Field.SSIDSDEB, format = Format.V, type = Type._9, length = 5)
     private Long ssidsdeb;
+
     /**
      *
      */
     @OFTPType(position = 40, field = OFTPType.Field.SSIDSR, format = Format.F, type = Type.X, length = 1)
     private String ssidsr;
+
     /**
      *
      */
     @OFTPType(position = 41, field = OFTPType.Field.SSIDCMPR, format = Format.F, type = Type.X, length = 1)
     private String ssidcmpr;
+
     /**
      *
      */
     @OFTPType(position = 42, field = OFTPType.Field.SSIDREST, format = Format.F, type = Type.X, length = 1)
     private String ssidrest;
+
     /**
      *
      */
     @OFTPType(position = 43, field = OFTPType.Field.SSIDSPEC, format = Format.F, type = Type.X, length = 1)
     private String ssidspec;
+
     /**
      *
      */
     @OFTPType(position = 44, field = OFTPType.Field.SSIDCRED, format = Format.V, type = Type._9, length = 3)
     private Long ssidcred;
+
     /**
      *
      */
     @OFTPType(position = 47, field = OFTPType.Field.SSIDAUTH, format = Format.F, type = Type.X, length = 1)
     private String ssidauth;
+
     /**
      *
      */
     @OFTPType(position = 48, field = OFTPType.Field.SSIDRSV1, format = Format.F, type = Type.X, length = 4)
     private String ssidrsv1;
+
     /**
      *
      */
     @OFTPType(position = 52, field = OFTPType.Field.SSIDUSER, format = Format.V, type = Type.X, length = 8)
     private String ssiduser;
+
     /**
      *
      */
