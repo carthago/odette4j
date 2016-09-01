@@ -36,7 +36,7 @@ public final class ESID
     private String esidreast;
 
     @OFTPType(field = Field.ESIDCR, format = Format.F, type = Type.X, length = 1)
-    private String esidcr;
+    private String esidcr = "\r";
 
     public ESID() {
         this.esidcmd = CommandIdentifier.ESID;
@@ -74,7 +74,4 @@ public final class ESID
         return esidcr;
     }
 
-    public void setEsidcr(String esidcr) {
-        this.esidcr = esidcr;
-    }
 }

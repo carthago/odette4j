@@ -36,9 +36,11 @@ public abstract class Command
                 if (annotation.annotationType().isAssignableFrom(OFTPType.class))
                 {
                     OFTPType type = (OFTPType) annotation;
-                    ByteBuffer newByteBuffer = ByteBuffer.allocate(type.length() + byteBuffer.capacity());
+                    int length = getLength(fields, ii, type);
+
+                    ByteBuffer newByteBuffer = ByteBuffer.allocate(length + byteBuffer.capacity());
                     newByteBuffer.put(byteBuffer.array());
-                    newByteBuffer.put(this.getBytesFromField(field, type));
+                    newByteBuffer.put(this.getBytesFromField(field, type, length));
                     byteBuffer = newByteBuffer;
                 }
             }
@@ -96,7 +98,7 @@ public abstract class Command
                         if (field.getType().isAssignableFrom(Short.class)) {
                             length = new Integer((String)field.get(this));
                         } else if (field.getType().isAssignableFrom(Integer.class)) {
-                            length = new Integer((String)field.get(this));
+                            length = (Integer)(field.get(this));
                         } else if (field.getType().isAssignableFrom(Long.class)) {
                             length = new Integer((String)field.get(this));
                         } else if (field.getType().isAssignableFrom(BigInteger.class)) {
@@ -236,9 +238,9 @@ public abstract class Command
         field.set(this, newCommandIdentifier);
     }
 
-    private final byte[] getBytesFromField(final Field field, final OFTPType type)
+    private final byte[] getBytesFromField(final Field field, final OFTPType type, final int length)
     {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(type.length());
+        ByteBuffer byteBuffer = ByteBuffer.allocate(length);
         field.setAccessible(true);
         try
         {
@@ -253,27 +255,27 @@ public abstract class Command
                     }
                     else if (field.getType().isAssignableFrom(String.class))
                     {
-                        byteBuffer.put(this.getBytesFromString((String) fieldObject, type), 0, type.length());
+                        byteBuffer.put(this.getBytesFromString((String) fieldObject, type), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(Integer.class))
                     {
-                        byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type), 0, type.length());
+                        byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(int.class))
                     {
-                        byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type), 0, type.length());
+                        byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(Long.class))
                     {
-                        byteBuffer.put(this.getBytesFromLong((Long) fieldObject, type), 0, type.length());
+                        byteBuffer.put(this.getBytesFromLong((Long) fieldObject, type), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(long.class))
                     {
-                        byteBuffer.put(this.getBytesFromLong((Long) fieldObject, type), 0, type.length());
+                        byteBuffer.put(this.getBytesFromLong((Long) fieldObject, type), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(BigInteger.class))
                     {
-                        byteBuffer.put(this.getBytesFromBigInteger((BigInteger) fieldObject, type), 0, type.length());
+                        byteBuffer.put(this.getBytesFromBigInteger((BigInteger) fieldObject, type), 0, length);
                     }
                 }
             }
@@ -299,6 +301,7 @@ public abstract class Command
     {
         byte[] byteArray;
         String format = "%-" + String.format("%d", type.length()) + "S";
+        System.out.println("FOO: " + type.field() +" - "+field);
         byteArray = String.format(format, field).getBytes(Command.CODEPAGE);
         return byteArray;
     }

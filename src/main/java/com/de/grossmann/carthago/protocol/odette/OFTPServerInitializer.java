@@ -4,6 +4,8 @@ package com.de.grossmann.carthago.protocol.odette;
 import com.de.grossmann.carthago.protocol.odette.codec.CommandDecoder;
 import com.de.grossmann.carthago.protocol.odette.codec.CommandEncoder;
 import com.de.grossmann.carthago.protocol.odette.codec.Transport;
+import com.de.grossmann.carthago.protocol.odette.config.OFTPNetworkConfiguration;
+import com.de.grossmann.carthago.protocol.odette.config.OFTPSessionConfiguration;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -25,7 +27,8 @@ public class OFTPServerInitializer extends ChannelInitializer<Channel> {
         LOGGER = LoggerFactory.getLogger(OFTPServerInitializer.class);
     }
 
-    private Transport transport = Transport.TCP;
+    private OFTPNetworkConfiguration oftpNetworkConfiguration;
+    private OFTPSessionConfiguration oftpSessionConfiguration;
 
     // TODO maybe we could get the constants from the StreamTransmissionHeader class
     // TODO what is is max frame length in our case (MAX_SIZE?)
@@ -43,16 +46,20 @@ public class OFTPServerInitializer extends ChannelInitializer<Channel> {
     // We do not need to strip the header.
     private static final int INITIAL_BYTES_TO_STRIP = 0;
 
-    public OFTPServerInitializer(final Transport transport) {
-        this.transport = transport;
+    public OFTPServerInitializer(final OFTPNetworkConfiguration oftpNetworkConfiguration,
+                                 final OFTPSessionConfiguration oftpSessionConfiguration) {
+        this.oftpNetworkConfiguration = oftpNetworkConfiguration;
+        this.oftpSessionConfiguration = oftpSessionConfiguration;
     }
 
     @Override
     public void initChannel(Channel channel) throws Exception {
         ChannelPipeline channelPipeline = channel.pipeline();
 
+        Transport transport = this.oftpNetworkConfiguration.getTransport();
+
         // Attention... see fall through
-        switch (this.transport) {
+        switch (transport) {
             case TLS:
                 SSLEngine engine =
                         OFTPSSLContextFactory.getServerContext().createSSLEngine();
@@ -74,7 +81,7 @@ public class OFTPServerInitializer extends ChannelInitializer<Channel> {
                 channelPipeline.addLast("command-encoder", new CommandEncoder(true));
 
                 // and then business logic.
-                channelPipeline.addLast("handler", new OFTPServerHandler());
+                channelPipeline.addLast("handler", new OFTPServerHandler(oftpSessionConfiguration));
 
                 break;
         }

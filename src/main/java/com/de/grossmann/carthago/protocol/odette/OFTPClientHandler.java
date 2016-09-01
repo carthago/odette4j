@@ -79,7 +79,7 @@ public class OFTPClientHandler extends ChannelHandlerAdapter
             ((SSID)response).setSsidauth("N");
             ((SSID)response).setSsidrsv1("");
             ((SSID)response).setSsiduser("");
-            ((SSID)response).setSsidcr("\r");
+
         } else if (command instanceof ESID) {
             ctx.close();
         }

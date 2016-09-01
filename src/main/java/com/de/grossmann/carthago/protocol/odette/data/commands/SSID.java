@@ -120,7 +120,7 @@ public final class SSID
      *
      */
     @OFTPType(position = 60, field = OFTPType.Field.SSIDCR, format = Format.F, type = Type.X, length = 1)
-    private String ssidcr;
+    private String ssidcr = "\r";
 
     public SSID() {
         this.ssidcmd = CommandIdentifier.SSID;
@@ -304,13 +304,5 @@ public final class SSID
     public final String getSsidcr() {
         return ssidcr;
     }
-
-    /**
-     * @param ssidcr the ssidcr to set
-     */
-    public final void setSsidcr(String ssidcr) {
-        this.ssidcr = ssidcr;
-    }
-
 
 }
