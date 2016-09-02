@@ -123,11 +123,16 @@ public class OFTPServerHandler extends ChannelHandlerAdapter
         else if (command instanceof DATA)
         {
             OFTPSessionConfiguration oftpSessionConfiguration = ctx.attr(OFTP_SESSION_CONFIGURTION_KEY).get();
+
             Long receivedDataPdus = ctx.attr(DATA_PDU_COUNTER_KEY).get();
 
             if (receivedDataPdus == null || receivedDataPdus.equals(0L))
             {
                 receivedDataPdus = 1L;
+            }
+            else
+            {
+                receivedDataPdus++;
             }
 
             if (receivedDataPdus.equals(oftpSessionConfiguration.getCredit()))
@@ -145,7 +150,7 @@ public class OFTPServerHandler extends ChannelHandlerAdapter
         }
         else if (command instanceof CD)
         {
-            String txt = "";
+            String txt = "DUMMY";
 
             response = new ESID();
             ((ESID) response).setEsidreas(0);

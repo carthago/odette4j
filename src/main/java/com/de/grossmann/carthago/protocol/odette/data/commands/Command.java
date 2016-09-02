@@ -3,6 +3,7 @@
  */
 package com.de.grossmann.carthago.protocol.odette.data.commands;
 
+import com.de.grossmann.carthago.common.ByteUtils;
 import com.de.grossmann.carthago.protocol.odette.data.OFTPType;
 
 import java.io.UnsupportedEncodingException;
@@ -67,7 +68,17 @@ public abstract class Command
             OFTPType oftpType = currentField.getAnnotation(OFTPType.class);
 
             // check for fields with a referenced length field
-            currentLength = getLength(fields, ii, oftpType);
+            switch (oftpType.length()) {
+                case OFTPType.NO_LENGTH:
+                    currentLength = getLength(fields, ii, oftpType);
+                    break;
+                case OFTPType.IMPLICIT_LENGTH:
+                    currentLength = byteArray.length - 1;
+                    break;
+                default:
+                    currentLength = currentField.getAnnotation(OFTPType.class).length();
+                    break;
+            }
 
             // calculate position
             currentPosition = getPosition(fields, ii, lastPosition, oftpType);
@@ -167,6 +178,10 @@ public abstract class Command
                 {
                     this.setBigIntegerByBytes(currentField, byteArray, currentPosition, currentLength);
                 }
+                else if (currentField.getType().isAssignableFrom(byte[].class))
+                {
+                    this.setByteArrayByBytes(currentField, byteArray, currentPosition, currentLength);
+                }
                 else if (currentField.getType().isAssignableFrom(CommandIdentifier.class))
                 {
                     this.setCommandIdentifierByBytes(currentField, byteArray, currentPosition, currentLength);
@@ -228,6 +243,12 @@ public abstract class Command
         field.set(this, newBigInteger);
     }
 
+    private final void setByteArrayByBytes(Field field, final byte[] byteArray, final int currentPosition, final int currentLength)
+        throws UnsupportedEncodingException, IllegalArgumentException, IllegalAccessException
+    {
+        field.set(this, Arrays.copyOfRange(byteArray, currentPosition, currentPosition + currentLength));
+    }
+
     private final void setCommandIdentifierByBytes(Field field, final byte[] byteArray, final int currentPosition, final int currentLength)
             throws UnsupportedEncodingException, IllegalArgumentException, IllegalAccessException
     {
@@ -255,27 +276,27 @@ public abstract class Command
                     }
                     else if (field.getType().isAssignableFrom(String.class))
                     {
-                        byteBuffer.put(this.getBytesFromString((String) fieldObject, type), 0, length);
+                        byteBuffer.put(this.getBytesFromString((String) fieldObject, type, length), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(Integer.class))
                     {
-                        byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type), 0, length);
+                        byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type, length), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(int.class))
                     {
-                        byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type), 0, length);
+                        byteBuffer.put(this.getBytesFromInteger((Integer) fieldObject, type, length), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(Long.class))
                     {
-                        byteBuffer.put(this.getBytesFromLong((Long) fieldObject, type), 0, length);
+                        byteBuffer.put(this.getBytesFromLong((Long) fieldObject, type, length), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(long.class))
                     {
-                        byteBuffer.put(this.getBytesFromLong((Long) fieldObject, type), 0, length);
+                        byteBuffer.put(this.getBytesFromLong((Long) fieldObject, type, length), 0, length);
                     }
                     else if (field.getType().isAssignableFrom(BigInteger.class))
                     {
-                        byteBuffer.put(this.getBytesFromBigInteger((BigInteger) fieldObject, type), 0, length);
+                        byteBuffer.put(this.getBytesFromBigInteger((BigInteger) fieldObject, type, length), 0, length);
                     }
                 }
             }
@@ -296,35 +317,41 @@ public abstract class Command
         return byteBuffer.array();
     }
 
-    private final byte[] getBytesFromString(String field, final OFTPType type)
+    private final byte[] getBytesFromString(String field, final OFTPType type, final int length)
             throws UnsupportedEncodingException
     {
+        String codePageToUse = CODEPAGE;
+        if (type.type() == OFTPType.Type.T)
+        {
+            codePageToUse = "UTF-8";
+        }
+
         byte[] byteArray;
-        String format = "%-" + String.format("%d", type.length()) + "S";
-        System.out.println("FOO: " + type.field() +" - "+field);
-        byteArray = String.format(format, field).getBytes(Command.CODEPAGE);
+
+        String format = "%-" + String.format("%d", length) + "S";
+        byteArray = String.format(format, field).getBytes(codePageToUse);
         return byteArray;
     }
 
-    private final byte[] getBytesFromLong(final Long field, final OFTPType type)
+    private final byte[] getBytesFromLong(final Long field, final OFTPType type, final int length)
             throws UnsupportedEncodingException
     {
-        String format = "%0" + String.format("%d", type.length()) + "d";
-        return this.getBytesFromString(String.format(format, field), type);
+        String format = "%0" + String.format("%d", length) + "d";
+        return this.getBytesFromString(String.format(format, field), type, length);
     }
 
-    private final byte[] getBytesFromInteger(final Integer field, final OFTPType type)
+    private final byte[] getBytesFromInteger(final Integer field, final OFTPType type, final int length)
             throws UnsupportedEncodingException
     {
-        String format = "%0" + String.format("%d", type.length()) + "d";
-        return this.getBytesFromString(String.format(format, field), type);
+        String format = "%0" + String.format("%d", length) + "d";
+        return this.getBytesFromString(String.format(format, field), type, length);
     }
 
-    private final byte[] getBytesFromBigInteger(final BigInteger field, final OFTPType type)
+    private final byte[] getBytesFromBigInteger(final BigInteger field, final OFTPType type, final int length)
             throws UnsupportedEncodingException
     {
-        String format = "%0" + String.format("%d", type.length()) + "d";
-        return this.getBytesFromString(String.format(format, field), type);
+        String format = "%0" + String.format("%d", length) + "d";
+        return this.getBytesFromString(String.format(format, field), type, length );
     }
 
     public String toString()
@@ -366,7 +393,14 @@ public abstract class Command
                     stringBuffer.append(") | ");
                     try
                     {
-                        stringBuffer.append(field.get(this));
+                        if (oftpType.type() == OFTPType.Type.U)
+                        {
+                            stringBuffer.append(ByteUtils.bytesToHex((byte[])field.get(this)));
+                        }
+                        else
+                        {
+                            stringBuffer.append(field.get(this));
+                        }
                     }
                     catch (IllegalArgumentException | IllegalAccessException e)
                     {

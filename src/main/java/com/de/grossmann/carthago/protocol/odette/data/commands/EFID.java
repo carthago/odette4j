@@ -35,7 +35,7 @@ public final class EFID
      *  Unit Count <br>
      */
     @OFTPType(position = 18, field = OFTPType.Field.EFIDUCNT, format = OFTPType.Format.V, type = OFTPType.Type._9, length = 17)
-    private String efiducnt;
+    private Long efiducnt;
 
     public EFID() {
         this.efidcmd = CommandIdentifier.EFID;

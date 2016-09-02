@@ -40,4 +40,14 @@ public final class CDT
     public CDT(final byte[] byteArray) {
         super.setBytes(byteArray);
     }
+
+    public String getCdtrsv1()
+    {
+        return cdtrsv1;
+    }
+
+    public void setCdtrsv1(String cdtrsv1)
+    {
+        this.cdtrsv1 = cdtrsv1;
+    }
 }

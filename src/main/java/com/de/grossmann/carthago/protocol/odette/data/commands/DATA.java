@@ -32,7 +32,7 @@ public final class DATA
      *
      * Variable-length buffer containing the data payload.<br>
      */
-    @OFTPType(position = 1, field = Field.DATABUF, format = Format.V, type = Type.U, length = OFTPType.NO_LENGTH)
+    @OFTPType(position = 1, field = Field.DATABUF, format = Format.V, type = Type.U, length = OFTPType.IMPLICIT_LENGTH)
     private byte[] databuf;
 
     public DATA() {

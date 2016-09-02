@@ -15,8 +15,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OFTPType {
 
-    int NO_POSITION = -1;
-    int NO_LENGTH   = -1;
+    int NO_POSITION     = -1;
+    int NO_LENGTH       = -2;
+    int IMPLICIT_LENGTH = -3;
 
     int    position() default NO_POSITION;
     int    length()   default NO_LENGTH;
