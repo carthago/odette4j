@@ -7,22 +7,17 @@ import com.de.grossmann.carthago.protocol.odette.codec.Transport;
 import com.de.grossmann.carthago.protocol.odette.config.OFTPNetworkConfiguration;
 import com.de.grossmann.carthago.protocol.odette.config.OFTPSessionConfiguration;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.traffic.ChannelTrafficShapingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.cgbystrom.netty.http.BandwidthMeterHandler;
 
 import javax.net.ssl.SSLEngine;
 
 
-public class OFTPServerInitializer extends ChannelInitializer<Channel> {
+class OFTPServerInitializer extends ChannelInitializer<Channel> {
 
     private static final Logger LOGGER;
 
@@ -49,8 +44,8 @@ public class OFTPServerInitializer extends ChannelInitializer<Channel> {
     // We do not need to strip the header.
     private static final int INITIAL_BYTES_TO_STRIP = 0;
 
-    public OFTPServerInitializer(final OFTPNetworkConfiguration oftpNetworkConfiguration,
-                                 final OFTPSessionConfiguration oftpSessionConfiguration) {
+    OFTPServerInitializer(final OFTPNetworkConfiguration oftpNetworkConfiguration,
+                          final OFTPSessionConfiguration oftpSessionConfiguration) {
         this.oftpNetworkConfiguration = oftpNetworkConfiguration;
         this.oftpSessionConfiguration = oftpSessionConfiguration;
     }
