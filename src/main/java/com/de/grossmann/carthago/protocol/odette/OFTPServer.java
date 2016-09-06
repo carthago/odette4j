@@ -1,6 +1,5 @@
 package com.de.grossmann.carthago.protocol.odette;
 
-import com.de.grossmann.carthago.protocol.odette.codec.Transport;
 import com.de.grossmann.carthago.protocol.odette.config.OFTPNetworkConfiguration;
 import com.de.grossmann.carthago.protocol.odette.config.OFTPSessionConfiguration;
 import io.netty.bootstrap.ServerBootstrap;
@@ -17,6 +16,10 @@ public class OFTPServer
 
     private static final Logger LOGGER;
 
+    private final EventLoopGroup bossGroup;
+    private final EventLoopGroup workerGroup;
+    private final ChannelFuture  channelFuture;
+
     static
     {
         LOGGER = LoggerFactory.getLogger(OFTPServer.class);
@@ -27,19 +30,23 @@ public class OFTPServer
     {
 
         // Configure the server.
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        bossGroup = new NioEventLoopGroup(1);
+        workerGroup = new NioEventLoopGroup();
+
         try
         {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).option(ChannelOption.SO_BACKLOG, 100)
-             .handler(new LoggingHandler(LogLevel.INFO)).childHandler(new OFTPServerInitializer(oftpNetworkConfiguration, oftpSessionConfiguration));
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+
+            serverBootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                           .option(ChannelOption.SO_BACKLOG, 100).handler(new LoggingHandler(LogLevel.INFO))
+                           .childHandler(new OFTPServerInitializer(oftpNetworkConfiguration, oftpSessionConfiguration));
 
             // Start the server.
-            ChannelFuture f = b.bind(oftpNetworkConfiguration.getHost(), oftpNetworkConfiguration.getPort()).sync();
+            channelFuture = serverBootstrap
+                .bind(oftpNetworkConfiguration.getHost(), oftpNetworkConfiguration.getPort()).sync();
 
             // Wait until the server socket is closed.
-            f.channel().closeFuture().sync();
+            channelFuture.channel().closeFuture().sync();
         }
         finally
         {
@@ -48,4 +55,5 @@ public class OFTPServer
             workerGroup.shutdownGracefully();
         }
     }
+
 }

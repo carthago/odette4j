@@ -4,13 +4,13 @@ import com.de.grossmann.carthago.protocol.odette.data.commands.Command;
 import com.de.grossmann.carthago.protocol.odette.data.commands.ESID;
 import com.de.grossmann.carthago.protocol.odette.data.commands.SSID;
 import com.de.grossmann.carthago.protocol.odette.data.commands.SSRM;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OFTPClientHandler extends ChannelHandlerAdapter
+class OFTPClientHandler extends ChannelInboundHandlerAdapter
 {
 
     private static final Logger LOGGER;
@@ -29,7 +29,8 @@ public class OFTPClientHandler extends ChannelHandlerAdapter
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception
     {
-        LOGGER.debug("Channel {} activated. {} -> {}", new Object[]{ctx.channel().id(), ctx.channel().localAddress(), ctx.channel().remoteAddress()});
+        LOGGER.debug("Channel {} activated. {} -> {}", ctx.channel().id(), ctx.channel().localAddress(),
+                     ctx.channel().remoteAddress());
         super.channelActive(ctx);
     }
 

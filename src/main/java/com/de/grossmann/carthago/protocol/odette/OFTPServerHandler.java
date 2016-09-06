@@ -2,13 +2,13 @@ package com.de.grossmann.carthago.protocol.odette;
 
 import com.de.grossmann.carthago.protocol.odette.config.OFTPSessionConfiguration;
 import com.de.grossmann.carthago.protocol.odette.data.commands.*;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OFTPServerHandler extends ChannelHandlerAdapter
+class OFTPServerHandler extends ChannelInboundHandlerAdapter
 {
 
     private static final Logger LOGGER;
