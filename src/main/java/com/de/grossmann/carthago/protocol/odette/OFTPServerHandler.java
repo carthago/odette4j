@@ -25,7 +25,7 @@ class OFTPServerHandler extends ChannelInboundHandlerAdapter
         LOGGER = LoggerFactory.getLogger(OFTPServerHandler.class);
     }
 
-    public OFTPServerHandler(final OFTPSessionConfiguration oftpSessionConfiguration)
+    OFTPServerHandler(final OFTPSessionConfiguration oftpSessionConfiguration)
     {
         this.oftpSessionConfigurationDefaults = oftpSessionConfiguration;
     }
@@ -39,8 +39,8 @@ class OFTPServerHandler extends ChannelInboundHandlerAdapter
      */
     @Override public void channelActive(ChannelHandlerContext ctx) throws Exception
     {
-        LOGGER.debug("Channel {} activated. {} -> {}",
-                     new Object[] { ctx.channel().id(), ctx.channel().localAddress(), ctx.channel().remoteAddress() });
+        LOGGER.debug("Channel {} activated. {} -> {}", ctx.channel().id(), ctx.channel().localAddress(),
+                     ctx.channel().remoteAddress());
 
         send(ctx, new SSRM());
 
@@ -96,7 +96,7 @@ class OFTPServerHandler extends ChannelInboundHandlerAdapter
                 OFTPSessionConfiguration oftpSessionConfiguration = negotiate(
                     this.oftpSessionConfigurationDefaults, incomingSSID);
 
-                ctx.attr(OFTP_SESSION_CONFIGURTION_KEY).set(oftpSessionConfiguration);
+                ctx.channel().attr(OFTP_SESSION_CONFIGURTION_KEY).set(oftpSessionConfiguration);
 
                 outgoingSSID.setSsidlev(oftpSessionConfiguration.getLevel());
                 outgoingSSID.setSsidcode(oftpSessionConfiguration.getUserCode());
@@ -122,9 +122,9 @@ class OFTPServerHandler extends ChannelInboundHandlerAdapter
         }
         else if (command instanceof DATA)
         {
-            OFTPSessionConfiguration oftpSessionConfiguration = ctx.attr(OFTP_SESSION_CONFIGURTION_KEY).get();
+            OFTPSessionConfiguration oftpSessionConfiguration = ctx.channel().attr(OFTP_SESSION_CONFIGURTION_KEY).get();
 
-            Long receivedDataPdus = ctx.attr(DATA_PDU_COUNTER_KEY).get();
+            Long receivedDataPdus = ctx.channel().attr(DATA_PDU_COUNTER_KEY).get();
 
             if (receivedDataPdus == null || receivedDataPdus.equals(0L))
             {
@@ -141,7 +141,7 @@ class OFTPServerHandler extends ChannelInboundHandlerAdapter
                 receivedDataPdus = 0L;
             }
 
-            ctx.attr(DATA_PDU_COUNTER_KEY).set(receivedDataPdus);
+            ctx.channel().attr(DATA_PDU_COUNTER_KEY).set(receivedDataPdus);
         }
         else if (command instanceof EFID)
         {

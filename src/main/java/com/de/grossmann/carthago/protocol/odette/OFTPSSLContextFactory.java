@@ -26,7 +26,7 @@ import java.security.Security;
  * to validate the client certificate.</li>
  * </ul>
  */
-public final class OFTPSSLContextFactory {
+final class OFTPSSLContextFactory {
 
     private static final Logger LOGGER;
 

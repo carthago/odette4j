@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLEngine;
 
 
-public class OFTPClientInitializer extends ChannelInitializer<Channel> {
+class OFTPClientInitializer extends ChannelInitializer<Channel> {
 
     private static final Logger LOGGER;
 
@@ -41,7 +41,7 @@ public class OFTPClientInitializer extends ChannelInitializer<Channel> {
     // We do not need to strip the header.
     private static final int INITIAL_BYTES_TO_STRIP = 0;
 
-    public OFTPClientInitializer(final Transport transport) {
+    OFTPClientInitializer(final Transport transport) {
         this.transport = transport;
     }
 

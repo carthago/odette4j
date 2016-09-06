@@ -13,7 +13,7 @@ import java.security.KeyStoreException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-public class OFTPTrustManagerFactory extends TrustManagerFactorySpi {
+class OFTPTrustManagerFactory extends TrustManagerFactorySpi {
 
     private static final Logger LOGGER;
     private static final TrustManager DUMMY_TRUST_MANAGER;
@@ -44,7 +44,7 @@ public class OFTPTrustManagerFactory extends TrustManagerFactorySpi {
         };
     }
 
-    public static TrustManager[] getTrustManagers() {
+    static TrustManager[] getTrustManagers() {
         return new TrustManager[]{DUMMY_TRUST_MANAGER};
     }
 
