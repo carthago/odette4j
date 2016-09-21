@@ -1,6 +1,8 @@
 package com.de.grossmann.carthago.protocol.odette;
 
 import com.de.grossmann.carthago.protocol.odette.codec.Transport;
+import com.de.grossmann.carthago.protocol.odette.config.OFTPNetworkConfiguration;
+import com.de.grossmann.carthago.protocol.odette.config.OFTPSessionConfiguration;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -19,7 +21,8 @@ public class OFTPClient {
     }
 ;
 
-    public OFTPClient(final String host, final int port, final Transport transport) {
+    public OFTPClient(final OFTPNetworkConfiguration oftpNetworkConfiguration,
+                      final OFTPSessionConfiguration oftpSessionConfiguration) {
 
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -29,14 +32,14 @@ public class OFTPClient {
 
             bootstrap.group(workerGroup)
                     .channel(NioSocketChannel.class)
-                    .remoteAddress(host, port)
+                    .remoteAddress(oftpNetworkConfiguration.getHost(), oftpNetworkConfiguration.getPort())
                     .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1000)
                     .option(ChannelOption.TCP_NODELAY, true)
                     .option(ChannelOption.SO_LINGER, 0)
-                    .handler(new OFTPClientInitializer(transport));
+                    .handler(new OFTPClientInitializer(oftpNetworkConfiguration, oftpSessionConfiguration));
 
             // Start the client.
-            ChannelFuture f = bootstrap.connect(host, port).sync(); // (5)
+            ChannelFuture f = bootstrap.connect().sync(); // (5)
 
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();

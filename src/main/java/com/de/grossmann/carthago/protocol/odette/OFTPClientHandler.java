@@ -1,12 +1,11 @@
 package com.de.grossmann.carthago.protocol.odette;
 
-import com.de.grossmann.carthago.protocol.odette.data.commands.Command;
-import com.de.grossmann.carthago.protocol.odette.data.commands.ESID;
-import com.de.grossmann.carthago.protocol.odette.data.commands.SSID;
-import com.de.grossmann.carthago.protocol.odette.data.commands.SSRM;
+import com.de.grossmann.carthago.protocol.odette.config.OFTPSessionConfiguration;
+import com.de.grossmann.carthago.protocol.odette.data.commands.*;
 import io.netty.channel.ChannelHandlerContext;
 
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +14,21 @@ class OFTPClientHandler extends ChannelInboundHandlerAdapter
 
     private static final Logger LOGGER;
 
+    private final OFTPSessionConfiguration oftpSessionConfigurationDefaults;
+
+    private final static AttributeKey<Long>                     DATA_PDU_COUNTER_KEY          = AttributeKey
+        .newInstance("receivedDataPdus");
+    private final static AttributeKey<OFTPSessionConfiguration> OFTP_SESSION_CONFIGURTION_KEY = AttributeKey
+        .newInstance("oftpSessionConfiguration");
+    private final static AttributeKey<Long>                     TIMER_KEY                     = AttributeKey
+        .newInstance("timer");
+
     static {
         LOGGER = LoggerFactory.getLogger(OFTPClientHandler.class);
+    }
+
+    OFTPClientHandler(final OFTPSessionConfiguration oftpSessionConfiguration) {
+        this.oftpSessionConfigurationDefaults = oftpSessionConfiguration;
     }
 
     /**
@@ -65,23 +77,26 @@ class OFTPClientHandler extends ChannelInboundHandlerAdapter
     private Command handleCommand(final ChannelHandlerContext ctx, final Command command) {
         Command response = null;
 
-        if (command instanceof SSRM)
-        {
+        if (command instanceof SSRM) {
             response = new SSID();
-            ((SSID)response).setSsidlev(5L);
-            ((SSID)response).setSsidcode("ODEVLAB2");
-            ((SSID)response).setSsidpswd("111111");
-            ((SSID)response).setSsidsdeb(99999L);
-            ((SSID)response).setSsidsr("B");
-            ((SSID)response).setSsidcmpr("N");
-            ((SSID)response).setSsidrest("N");
-            ((SSID)response).setSsidspec("N");
-            ((SSID)response).setSsidcred(999L);
-            ((SSID)response).setSsidauth("N");
-            ((SSID)response).setSsidrsv1("");
-            ((SSID)response).setSsiduser("");
-
-        } else if (command instanceof ESID) {
+            ((SSID)response).setSsidlev(this.oftpSessionConfigurationDefaults.getLevel());
+            ((SSID)response).setSsidcode(this.oftpSessionConfigurationDefaults.getUserCode());
+            ((SSID)response).setSsidpswd(this.oftpSessionConfigurationDefaults.getPassword());
+            ((SSID)response).setSsidsdeb(this.oftpSessionConfigurationDefaults.getDataExchangeBufferSize());
+            ((SSID)response).setSsidsr(String.valueOf(this.oftpSessionConfigurationDefaults.getCapabilities()));
+            ((SSID)response).setSsidcmpr(String.valueOf(this.oftpSessionConfigurationDefaults.getCompression()));
+            ((SSID)response).setSsidrest(String.valueOf(this.oftpSessionConfigurationDefaults.getRestart()));
+            ((SSID)response).setSsidspec(String.valueOf(this.oftpSessionConfigurationDefaults.getSpecialLogic()));
+            ((SSID)response).setSsidcred(this.oftpSessionConfigurationDefaults.getCredit());
+            ((SSID)response).setSsidauth(String.valueOf(this.oftpSessionConfigurationDefaults.getAuthentication()));
+            ((SSID)response).setSsidrsv1(this.oftpSessionConfigurationDefaults.getReserved());
+            ((SSID)response).setSsiduser(this.oftpSessionConfigurationDefaults.getUserData());
+        }
+        else if (command instanceof SSID) {
+            response = new SFID();
+            //((SFID)response).s
+        }
+        else if (command instanceof ESID) {
             ctx.close();
         }
 

@@ -19,6 +19,8 @@ class OFTPServerHandler extends ChannelInboundHandlerAdapter
         .newInstance("receivedDataPdus");
     private final static AttributeKey<OFTPSessionConfiguration> OFTP_SESSION_CONFIGURTION_KEY = AttributeKey
         .newInstance("oftpSessionConfiguration");
+    private final static  AttributeKey<Long>                    TIMER_KEY                     = AttributeKey
+        .newInstance("timer");
 
     static
     {
@@ -117,6 +119,7 @@ class OFTPServerHandler extends ChannelInboundHandlerAdapter
         }
         else if (command instanceof SFID)
         {
+            ctx.channel().attr(TIMER_KEY).set(System.currentTimeMillis());
             response = new SFPA();
             ((SFPA) response).setSfpacnt(0L);
         }
@@ -145,6 +148,12 @@ class OFTPServerHandler extends ChannelInboundHandlerAdapter
         }
         else if (command instanceof EFID)
         {
+            Long start = ctx.channel().attr(TIMER_KEY).get();
+            Long end   = System.currentTimeMillis();
+
+            System.out.printf("transmission took %d ms%n",
+                              (end - start));
+
             response = new EFPA();
             ((EFPA) response).setEfpacd("N");
         }
