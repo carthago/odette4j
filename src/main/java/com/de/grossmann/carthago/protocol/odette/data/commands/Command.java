@@ -107,13 +107,13 @@ public abstract class Command
                     try
                     {
                         if (field.getType().isAssignableFrom(Short.class)) {
-                            length = new Integer((String)field.get(this));
+                            length = ((Short)field.get(this)).intValue();
                         } else if (field.getType().isAssignableFrom(Integer.class)) {
                             length = (Integer)(field.get(this));
                         } else if (field.getType().isAssignableFrom(Long.class)) {
-                            length = new Integer((String)field.get(this));
+                            length = ((Long)field.get(this)).intValue();
                         } else if (field.getType().isAssignableFrom(BigInteger.class)) {
-                            length = new Integer(((BigInteger)field.get(this)).intValue());
+                            length = ((BigInteger)field.get(this)).intValue();
                         } else if (field.getType().isAssignableFrom(String.class)){
                             length = new Integer((String)field.get(this));
                         } else {
