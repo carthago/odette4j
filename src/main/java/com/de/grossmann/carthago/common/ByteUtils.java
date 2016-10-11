@@ -1,5 +1,7 @@
 package com.de.grossmann.carthago.common;
 
+import java.io.File;
+
 public final class ByteUtils {
 
     private static final String HEXES = "0123456789ABCDEF";
@@ -50,11 +52,92 @@ public final class ByteUtils {
                 + (bytes[3] & 0xFF);
     }
 
-    public static String bytesToHex(final byte[] bytes) {
-        final StringBuilder hex = new StringBuilder(2 * bytes.length);
-        for (final byte b : bytes) {
-            hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F))).append(" ");
+    public static String bytesToHex(final byte[] bytes, final int offset ) {
+
+        StringBuffer sHex  = new StringBuffer( 86 );
+        StringBuffer sChar = new StringBuffer( 32 );
+        StringBuffer sLog  = new StringBuffer( 118 );
+
+        String s;
+        String sh;
+
+        int position = 0;
+        int cursor = 0;
+        int myByte;
+
+        while ( position < bytes.length)
+        {
+            if (bytes[position] < 0)
+            {
+                myByte = 256 + bytes[position];
+            }
+            else
+            {
+                myByte = bytes[position];
+            }
+
+            s =  Integer.toHexString(myByte).toUpperCase();
+            if ( s.length() == 1)
+            {
+                sh = "0"+s;
+            }
+            else
+            {
+                sh = s;
+            }
+
+            sHex.append(sh);
+            cursor += 2;
+
+            if ( ((position + 1) % 8) == 0 && ((position +1) % 32 != 0) && ((position +1) != bytes.length))
+            {
+                sHex.append(" | ");
+                cursor += 3;
+            }
+            else if ( (position + 1 ) % 2 == 0)
+            {
+                sHex.append(" ");
+                cursor += 1;
+            }
+
+
+            if (Character.isLetterOrDigit((char)bytes[position]))
+            {
+                sChar.append((char)bytes[position]);
+            }
+            else
+            {
+                sChar.append(".");
+            }
+
+            if (((position +1) % 32) == 0 || (position + 1) == bytes.length)
+            {
+                if((position + 1) > 32)
+                {
+                    sLog.append(String.format("%-"+ offset + "s%s", "",sHex));
+                } else {
+                    sLog.append(sHex);
+                }
+
+                int spaces = 86 - cursor;
+
+                for(int i = spaces; i > 0; i--)
+                {
+                    sLog.append(" ");
+                }
+
+                sLog.append(sChar);
+                sLog.append("\n");
+
+                cursor = 0;
+
+                sHex  = new StringBuffer( 86 );
+                sChar = new StringBuffer( 32 );
+
+            }
+            position++;
         }
-        return hex.toString();
+
+        return sLog.toString();
     }
 }

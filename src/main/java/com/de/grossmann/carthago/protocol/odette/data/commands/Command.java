@@ -395,7 +395,7 @@ public abstract class Command
                     {
                         if (oftpType.type() == OFTPType.Type.U)
                         {
-                            stringBuffer.append(ByteUtils.bytesToHex((byte[])field.get(this)));
+                            stringBuffer.append(ByteUtils.bytesToHex((byte[])field.get(this), 32));
                         }
                         else
                         {
